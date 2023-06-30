@@ -20,7 +20,7 @@ body::-webkit-scrollbar {
 
 #boids-canvas {
   position: fixed;
-  filter: blur(1.25px);
+  filter: brightness(50%) blur(3px);
 }
 
 nav {
@@ -30,7 +30,7 @@ nav {
   align-items: center;
   gap: 4vw;
 
-  z-index: 99999;
+  z-index: 1;
   width: 100%;
   height: 8vh;
   backdrop-filter: blur(8px);
@@ -187,7 +187,7 @@ nav {
 .hidden {
   opacity: 0;
   filter: blur(5px);
-  transition: all 1s;
+  transition: all 2s;
 }
 
 .show {

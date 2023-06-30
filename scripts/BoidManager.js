@@ -1,8 +1,18 @@
 const canvas = document.getElementById('boids-canvas');
 const context = canvas.getContext('2d');
 
-const numOfBoids = 1000;
-const detectionRange = 75;
+const numOfBoids = 5000;
+
+const minSpeed = 0.1;
+const maxSpeed = 0.8;
+const turnFactor = 0.075;
+
+const detectionRange = 50;
+const seperationRange = 8;
+
+const seperationWeight = .9;
+const alignmentWeight = .4;
+const cohesionWeight = .000005;
 
 const boids = [];
 
@@ -23,10 +33,10 @@ function updateCanvas() {
 }
 
 function createBoid() {
-  const position = new Vector2D(Math.random() * section.width, Math.random() * section.height);
+  const position = new Vector2D(Math.random() * width, Math.random() * height);
   const velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1);
 
-  const boid = new Boid(position, velocity, 3);
+  let boid = new Boid(position, velocity, 6);
   boids.push(boid);
 
   qTree.insert(boid);
@@ -34,7 +44,28 @@ function createBoid() {
 
 function createQuadTree() {
   boundary = new Rectangle(0, 0, width, height);
-  qTree = new QuadTree(boundary, 4);
+  qTree = new QuadTree(boundary, 10);
+}
+
+let prevTime = Date.now();
+let frames = 0;
+let calculatedFps = [];
+
+function logFPS() {
+  const time = Date.now();
+  frames++;
+  if (time > prevTime + 1000) {
+    let fps = Math.round( ( frames * 1000 ) / ( time - prevTime ) );
+    prevTime = time;
+    frames = 0;
+
+    calculatedFps.push(fps);
+    console.info('FPS: ', fps);
+
+    let countedFrames = 0;
+    calculatedFps.forEach(frame => countedFrames += frame);
+    console.info('avg. FPS: ', Math.round(countedFrames / calculatedFps.length));
+  }
 }
 
 function updateBoids() {
@@ -45,19 +76,83 @@ function updateBoids() {
 
   // Update and draw each boid
   for (const boid of boids) {
-    boid.update();
     qTree.insert(boid);
-    boid.draw(context);
+
+    let range = new Rectangle(boid.position.x - detectionRange / 2, boid.position.y - detectionRange / 2, detectionRange, detectionRange);
     let boidsInRange = [];
-    qTree.query(new Rectangle(boid.position.x - 50, boid.position.y - 50, 25, 25), boidsInRange);
-    
-    // drawBoidRange(boid);
-    // drawNearbyBoids(boidsInRange);
+    qTree.query(range, boidsInRange);
+
+    nextMove(boid, boidsInRange);
+
+    boid.update(width, height, turnFactor, 35);
+    boid.draw(context);
+
+    /* drawBoidRange(boid);
+    drawNearbyBoids(boid, boidsInRange); */
   }
+
+  // logFPS();
 
   qTree.show(context);
   requestAnimationFrame(updateBoids);
 }
+
+
+function nextMove(currentBoid, nearbyBoids) {
+  let seperation = new Vector2D(0, 0);
+  let alignment = new Vector2D(0, 0);
+  let cohesion = new Vector2D(0, 0);
+  let nearbyBoidCount = 0;
+
+  for (let boid of nearbyBoids) {
+    if (currentBoid !== boid) {
+      nearbyBoidCount++;
+
+      if (currentBoid.position.distance(boid.position) <= seperationRange) {
+        seperation.x += currentBoid.position.x - boid.position.x;
+        seperation.y += currentBoid.position.y - boid.position.y;
+      }
+
+      alignment.x += boid.velocity.x;
+      alignment.y += boid.velocity.y;
+
+      cohesion.x += boid.position.x;
+      cohesion.y += boid.position.y;
+    }
+  }
+
+  if (nearbyBoidCount > 0) {
+    alignment.x = alignment.x / nearbyBoidCount;
+    alignment.y = alignment.y / nearbyBoidCount;
+  }
+
+  if (nearbyBoidCount > 0) {
+    cohesion.x = cohesion.x / nearbyBoidCount;
+    cohesion.y = cohesion.y / nearbyBoidCount;
+
+    cohesion.x = cohesion.x - currentBoid.position.x;
+    cohesion.y = cohesion.y - currentBoid.position.y;
+  }
+
+  currentBoid.velocity.x += seperation.x * seperationWeight;
+  currentBoid.velocity.y += seperation.y * seperationWeight;
+
+  currentBoid.velocity.x += alignment.x * alignmentWeight;
+  currentBoid.velocity.y += alignment.y * alignmentWeight;
+
+  currentBoid.velocity.x += cohesion.x * cohesionWeight;
+  currentBoid.velocity.y += cohesion.y * cohesionWeight;
+
+  let speed = Math.sqrt(currentBoid.velocity.x * currentBoid.velocity.x + currentBoid.velocity.y * currentBoid.velocity.y);
+  if (speed > maxSpeed) {
+    currentBoid.velocity.x = (currentBoid.velocity.x / speed) * maxSpeed;
+    currentBoid.velocity.y = (currentBoid.velocity.y / speed) * maxSpeed;
+  } else if (speed < minSpeed) {
+    currentBoid.velocity.x = (currentBoid.velocity.x / speed) * minSpeed;
+    currentBoid.velocity.y = (currentBoid.velocity.y / speed) * minSpeed;
+  }
+}
+
 
 function drawBoidRange(boid) {
   context.beginPath();
@@ -67,28 +162,18 @@ function drawBoidRange(boid) {
   context.stroke();
 }
 
-function drawNearbyBoids(nearbyBoids) {
+function drawNearbyBoids(currentBoid, nearbyBoids) {
   for (let boid of nearbyBoids) {
-    const x = boid.position.x - (boid.size / 2);
-    const y = boid.position.y - (boid.size / 2);
-  
-    context.beginPath();
-    context.fillStyle = "green";
-    context.rect(x, y, boid.size, boid.size);
-    context.fill();
+    if (boid !== currentBoid) {
+      const x = boid.position.x - (boid.size / 2);
+      const y = boid.position.y - (boid.size / 2);
+
+      context.beginPath();
+      context.fillStyle = "green";
+      context.rect(x, y, boid.size, boid.size);
+      context.fill();
+    }
   }
-}
-
-function calculateAlignment(boid, nearbyBoids) {
-
-}
-
-function calculateCohesion(boid) {
-
-}
-
-function calculateSeperation() {
-
 }
 
 updateCanvas();
