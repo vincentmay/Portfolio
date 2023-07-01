@@ -1,27 +1,33 @@
 const canvas = document.getElementById('boids-canvas');
 const context = canvas.getContext('2d');
 
-const logFps = false;
+let cursor = document.getElementById('cursor');
+let innerCursor = document.getElementById('inner-cursor');
+
+const logFps = true;
 
 const drawBoidsRange =  false;
 const highlightBoidsInRange = false;
 
 const qTreeCapacity = 10;
 
-const boidSize = 12;
+const boidSize = 16;
 
 const numOfBoids = 5000;
 
-const minSpeed = 0.1;
-const maxSpeed = 0.8;
+const minSpeed = .1;
+const maxSpeed = .8;
 const turnFactor = 0.1;
 
 const detectionRange = 40;
 const seperationRange = 8;
+const mouseAvoidanceRange = 30;
 
-const seperationWeight = 1;
+const seperationWeight = 0.8;
 const alignmentWeight = 0.3;
 const cohesionWeight = 0.0005;
+
+const edgeMargin = 50;
 
 const boids = [];
 
@@ -32,6 +38,23 @@ let height;
 let boundary;
 let qTree;
 
+let mouseX = 0;
+let mouseY = 0;
+
+let mousedown = false;
+
+document.addEventListener('mousemove', function(event) {
+  mouseX = event.clientX;
+  mouseY = event.clientY;
+});
+
+document.addEventListener('mousedown', function() {
+  mousedown = true;
+});
+
+document.addEventListener('mouseup', function() {
+  mousedown = false;
+});
 
 function updateCanvas() {
   section = document.getElementById('start-container').getBoundingClientRect();
@@ -70,9 +93,34 @@ function updateBoids() {
     let boidsInRange = [];
     qTree.query(range, boidsInRange);
 
-    nextMove(boid, boidsInRange);
 
-    boid.update(width, height, turnFactor, 35);
+    if (mousedown) {
+      boid.velocity.x = mouseX - boid.position.x;
+      boid.velocity.y = mouseY - boid.position.y;
+    }
+
+    if (Math.sqrt(Math.pow(mouseY - boid.position.y, 2) + Math.pow(mouseX - boid.position.x, 2)) <= mouseAvoidanceRange) {
+      const oppositevx = -(mouseX - boid.position.x);
+      const oppositevy = -(mouseY - boid.position.y);
+
+      boid.velocity.x = oppositevx;
+      boid.velocity.y = oppositevy;
+
+      limitVelocity(boid);
+
+      const x = boid.position.x - (boid.size / 2);
+      const y = boid.position.y - (boid.size / 2);
+
+      context.beginPath();
+      context.fillStyle = "rgba(58, 162, 210, .5)";
+      context.rect(x, y, boid.size, boid.size);
+      context.fill();
+    } else {
+      nextMove(boid, boidsInRange);
+    }
+
+
+    boid.update(width, height, turnFactor, edgeMargin);
     boid.draw(context);
 
     if (drawBoidsRange) {
@@ -105,45 +153,48 @@ function nextMove(currentBoid, nearbyBoids) {
       if (currentBoid.position.distance(boid.position) <= seperationRange) {
         seperation.x += currentBoid.position.x - boid.position.x;
         seperation.y += currentBoid.position.y - boid.position.y;
+      } else {
+        alignment.x += boid.velocity.x;
+        alignment.y += boid.velocity.y;
+  
+        cohesion.x += boid.position.x;
+        cohesion.y += boid.position.y;
       }
 
-      alignment.x += boid.velocity.x;
-      alignment.y += boid.velocity.y;
-
-      cohesion.x += boid.position.x;
-      cohesion.y += boid.position.y;
     }
   }
 
   if (nearbyBoidCount > 0) {
     alignment.x = alignment.x / nearbyBoidCount;
     alignment.y = alignment.y / nearbyBoidCount;
-  }
-
-  if (nearbyBoidCount > 0) {
     cohesion.x = cohesion.x / nearbyBoidCount;
     cohesion.y = cohesion.y / nearbyBoidCount;
-
+  
     cohesion.x = cohesion.x - currentBoid.position.x;
     cohesion.y = cohesion.y - currentBoid.position.y;
+
+    currentBoid.velocity.x += alignment.x * alignmentWeight;
+    currentBoid.velocity.y += alignment.y * alignmentWeight;
+  
+    currentBoid.velocity.x += cohesion.x * cohesionWeight;
+    currentBoid.velocity.y += cohesion.y * cohesionWeight;
   }
 
   currentBoid.velocity.x += seperation.x * seperationWeight;
   currentBoid.velocity.y += seperation.y * seperationWeight;
 
-  currentBoid.velocity.x += alignment.x * alignmentWeight;
-  currentBoid.velocity.y += alignment.y * alignmentWeight;
+  limitVelocity(currentBoid);
+}
 
-  currentBoid.velocity.x += cohesion.x * cohesionWeight;
-  currentBoid.velocity.y += cohesion.y * cohesionWeight;
+function limitVelocity(boid) {
+  let speed = Math.sqrt(boid.velocity.x * boid.velocity.x + boid.velocity.y * boid.velocity.y);
 
-  let speed = Math.sqrt(currentBoid.velocity.x * currentBoid.velocity.x + currentBoid.velocity.y * currentBoid.velocity.y);
   if (speed > maxSpeed) {
-    currentBoid.velocity.x = (currentBoid.velocity.x / speed) * maxSpeed;
-    currentBoid.velocity.y = (currentBoid.velocity.y / speed) * maxSpeed;
+    boid.velocity.x = (boid.velocity.x / speed) * maxSpeed;
+    boid.velocity.y = (boid.velocity.y / speed) * maxSpeed;
   } else if (speed < minSpeed) {
-    currentBoid.velocity.x = (currentBoid.velocity.x / speed) * minSpeed;
-    currentBoid.velocity.y = (currentBoid.velocity.y / speed) * minSpeed;
+    boid.velocity.x = (boid.velocity.x / speed) * minSpeed;
+    boid.velocity.y = (boid.velocity.y / speed) * minSpeed;
   }
 }
 

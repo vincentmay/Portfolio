@@ -12,14 +12,16 @@ class Boid {
   update(width, height, turnFactor, offset) {
     if (this.position.x < offset) {
       this.velocity.x = this.velocity.x + turnFactor;
-    } else if (this.position.x > width - offset) {
+    } 
+    if (this.position.x > width - offset) {
       this.velocity.x = this.velocity.x - turnFactor;
     }
-    if (this.position.y < offset ) {
-      this.velocity.y = this.velocity.y + turnFactor;
-    }else if (this.position.y > height - offset) {
+    if (this.position.y > height - offset) {
       this.velocity.y = this.velocity.y - turnFactor;
     } 
+    if (this.position.y < offset ) {
+      this.velocity.y = this.velocity.y + turnFactor;
+    }
     
     this.position = this.position.add(this.velocity);
   }
@@ -30,7 +32,7 @@ class Boid {
     const y = this.position.y - (this.size / 2);
 
     context.beginPath();
-    context.fillStyle = "rgba(255, 255, 255, .2)";
+    context.fillStyle = "rgba(255, 255, 255, .15)";
     context.rect(x, y, this.size, this.size);
     context.fill();
   }
