@@ -1,18 +1,27 @@
 const canvas = document.getElementById('boids-canvas');
 const context = canvas.getContext('2d');
 
+const logFps = false;
+
+const drawBoidsRange =  false;
+const highlightBoidsInRange = false;
+
+const qTreeCapacity = 10;
+
+const boidSize = 12;
+
 const numOfBoids = 5000;
 
 const minSpeed = 0.1;
 const maxSpeed = 0.8;
-const turnFactor = 0.075;
+const turnFactor = 0.1;
 
-const detectionRange = 50;
+const detectionRange = 40;
 const seperationRange = 8;
 
-const seperationWeight = .9;
-const alignmentWeight = .4;
-const cohesionWeight = .000005;
+const seperationWeight = 1;
+const alignmentWeight = 0.3;
+const cohesionWeight = 0.0005;
 
 const boids = [];
 
@@ -36,7 +45,7 @@ function createBoid() {
   const position = new Vector2D(Math.random() * width, Math.random() * height);
   const velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1);
 
-  let boid = new Boid(position, velocity, 6);
+  let boid = new Boid(position, velocity, boidSize);
   boids.push(boid);
 
   qTree.insert(boid);
@@ -44,28 +53,7 @@ function createBoid() {
 
 function createQuadTree() {
   boundary = new Rectangle(0, 0, width, height);
-  qTree = new QuadTree(boundary, 10);
-}
-
-let prevTime = Date.now();
-let frames = 0;
-let calculatedFps = [];
-
-function logFPS() {
-  const time = Date.now();
-  frames++;
-  if (time > prevTime + 1000) {
-    let fps = Math.round( ( frames * 1000 ) / ( time - prevTime ) );
-    prevTime = time;
-    frames = 0;
-
-    calculatedFps.push(fps);
-    console.info('FPS: ', fps);
-
-    let countedFrames = 0;
-    calculatedFps.forEach(frame => countedFrames += frame);
-    console.info('avg. FPS: ', Math.round(countedFrames / calculatedFps.length));
-  }
+  qTree = new QuadTree(boundary, qTreeCapacity);
 }
 
 function updateBoids() {
@@ -87,11 +75,17 @@ function updateBoids() {
     boid.update(width, height, turnFactor, 35);
     boid.draw(context);
 
-    /* drawBoidRange(boid);
-    drawNearbyBoids(boid, boidsInRange); */
+    if (drawBoidsRange) {
+      drawBoidRange(boid);
+    }
+    if (highlightBoidsInRange) {
+      drawNearbyBoids(boid, boidsInRange);
+    }
   }
 
-  // logFPS();
+  if (logFps) {
+    logFPS();
+  }
 
   qTree.show(context);
   requestAnimationFrame(updateBoids);
@@ -173,6 +167,27 @@ function drawNearbyBoids(currentBoid, nearbyBoids) {
       context.rect(x, y, boid.size, boid.size);
       context.fill();
     }
+  }
+}
+
+let prevTime = Date.now();
+let frames = 0;
+let calculatedFps = [];
+
+function logFPS() {
+  const time = Date.now();
+  frames++;
+  if (time > prevTime + 1000) {
+    let fps = Math.round((frames * 1000) / (time - prevTime));
+    prevTime = time;
+    frames = 0;
+
+    calculatedFps.push(fps);
+    // console.info('FPS: ', fps);
+
+    let countedFrames = 0;
+    calculatedFps.forEach(frame => countedFrames += frame);
+    console.info('avg. FPS: ', Math.round(countedFrames / calculatedFps.length));
   }
 }
 

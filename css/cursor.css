@@ -1,0 +1,26 @@
+#cursor {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 1px solid #358bd6;
+    transition: all 150ms ease-out;
+    position: fixed;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    transform: translate(-50%);
+    z-index: 1;
+}
+
+#inner-cursor {
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background-color: white;
+    opacity: 0.7;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: none;
+    z-index: 1;
+}
