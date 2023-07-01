@@ -4,7 +4,7 @@ const context = canvas.getContext('2d');
 let cursor = document.getElementById('cursor');
 let innerCursor = document.getElementById('inner-cursor');
 
-const logFps = true;
+const logFps = false;
 
 const drawBoidsRange =  false;
 const highlightBoidsInRange = false;
