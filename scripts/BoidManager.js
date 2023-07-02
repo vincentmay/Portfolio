@@ -1,22 +1,22 @@
 const canvas = document.getElementById('boids-canvas');
 const context = canvas.getContext('2d');
 
-let cursor = document.getElementById('cursor');
-let innerCursor = document.getElementById('inner-cursor');
+let cursor = document.querySelector('.cursor');
+let cursoroutline = document.querySelector('.cursor-outline');
 
 const logFps = false;
 
-const drawBoidsRange =  false;
+const drawBoidsRange = false;
 const highlightBoidsInRange = false;
 
 const qTreeCapacity = 10;
 
-const boidSize = 16;
+const boidSize = 12;
 
 const numOfBoids = 5000;
 
-const minSpeed = .1;
-const maxSpeed = .8;
+const minSpeed = 0.1;
+const maxSpeed = 0.8;
 const turnFactor = 0.1;
 
 const detectionRange = 40;
@@ -38,28 +38,32 @@ let height;
 let boundary;
 let qTree;
 
-let mouseX = 0;
-let mouseY = 0;
+let mouseX;
+let mouseY;
 
-let mousedown = false;
+let mousedown;
 
-document.addEventListener('mousemove', function(event) {
+document.addEventListener('mousemove', function (event) {
   mouseX = event.clientX;
   mouseY = event.clientY;
+
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+
+  cursoroutline.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`;
 });
 
-document.addEventListener('mousedown', function() {
+document.addEventListener('mousedown', function () {
   mousedown = true;
 });
 
-document.addEventListener('mouseup', function() {
+document.addEventListener('mouseup', function () {
   mousedown = false;
 });
 
 function updateCanvas() {
-  section = document.getElementById('start-container').getBoundingClientRect();
-  width = section.width;
-  height = section.height;
+  width = window.innerWidth;
+  height = window.innerHeight;
   canvas.height = height;
   canvas.width = width;
 }
@@ -67,7 +71,6 @@ function updateCanvas() {
 function createBoid() {
   const position = new Vector2D(Math.random() * width, Math.random() * height);
   const velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1);
-
   let boid = new Boid(position, velocity, boidSize);
   boids.push(boid);
 
@@ -80,9 +83,7 @@ function createQuadTree() {
 }
 
 function updateBoids() {
-  updateCanvas();
   createQuadTree();
-
   context.clearRect(0, 0, width, height);
 
   // Update and draw each boid
@@ -115,9 +116,9 @@ function updateBoids() {
       context.fillStyle = "rgba(58, 162, 210, .5)";
       context.rect(x, y, boid.size, boid.size);
       context.fill();
-    } else {
-      nextMove(boid, boidsInRange);
     }
+
+    nextMove(boid, boidsInRange);
 
 
     boid.update(width, height, turnFactor, edgeMargin);
@@ -153,10 +154,11 @@ function nextMove(currentBoid, nearbyBoids) {
       if (currentBoid.position.distance(boid.position) <= seperationRange) {
         seperation.x += currentBoid.position.x - boid.position.x;
         seperation.y += currentBoid.position.y - boid.position.y;
-      } else {
+      } else if (currentBoid.position.distance(boid.position) <= detectionRange) {
+
         alignment.x += boid.velocity.x;
         alignment.y += boid.velocity.y;
-  
+
         cohesion.x += boid.position.x;
         cohesion.y += boid.position.y;
       }
@@ -165,17 +167,17 @@ function nextMove(currentBoid, nearbyBoids) {
   }
 
   if (nearbyBoidCount > 0) {
-    alignment.x = alignment.x / nearbyBoidCount;
-    alignment.y = alignment.y / nearbyBoidCount;
-    cohesion.x = cohesion.x / nearbyBoidCount;
-    cohesion.y = cohesion.y / nearbyBoidCount;
-  
-    cohesion.x = cohesion.x - currentBoid.position.x;
-    cohesion.y = cohesion.y - currentBoid.position.y;
+    alignment.x /= nearbyBoidCount;
+    alignment.y /= nearbyBoidCount;
+    cohesion.x /= nearbyBoidCount;
+    cohesion.y /= nearbyBoidCount;
+
+    cohesion.x -= currentBoid.position.x;
+    cohesion.y -= currentBoid.position.y;
 
     currentBoid.velocity.x += alignment.x * alignmentWeight;
     currentBoid.velocity.y += alignment.y * alignmentWeight;
-  
+
     currentBoid.velocity.x += cohesion.x * cohesionWeight;
     currentBoid.velocity.y += cohesion.y * cohesionWeight;
   }
@@ -243,6 +245,9 @@ function logFPS() {
 }
 
 updateCanvas();
+
+window.addEventListener('resize', updateCanvas);
+
 createQuadTree();
 
 for (let i = 0; i < numOfBoids; i++) {

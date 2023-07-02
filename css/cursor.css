@@ -13,8 +13,8 @@
 }
 
 .cursor {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 100%;
     background-color: white;
     opacity: 0.7;
@@ -28,16 +28,24 @@
 }
 
 .cursor-hover {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     opacity: .5;
     border: 2px solid #358bd6;
 }
 
 .cursor-outline-hover {
-    border: none;
+    opacity: 0;
 }
 
 .cursor-click {
+    width: 15px;
+    height: 15px;
+    opacity: .5;
+    border: 2px solid #358bd6;
     opacity: 1;
+}
+
+.outline-click {
+    opacity: 0;
 }

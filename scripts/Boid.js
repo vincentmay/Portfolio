@@ -11,18 +11,18 @@ class Boid {
   // Udpating the boids Position
   update(width, height, turnFactor, offset) {
     if (this.position.x < offset) {
-      this.velocity.x = this.velocity.x + turnFactor;
-    } 
+      this.velocity.x += turnFactor;
+    }
     if (this.position.x > width - offset) {
-      this.velocity.x = this.velocity.x - turnFactor;
+      this.velocity.x -= turnFactor;
     }
     if (this.position.y > height - offset) {
-      this.velocity.y = this.velocity.y - turnFactor;
-    } 
-    if (this.position.y < offset ) {
-      this.velocity.y = this.velocity.y + turnFactor;
+      this.velocity.y -= turnFactor;
     }
-    
+    if (this.position.y < offset) {
+      this.velocity.y += turnFactor;
+    }
+
     this.position = this.position.add(this.velocity);
   }
 

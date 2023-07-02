@@ -1,5 +1,7 @@
 #boids-canvas {
   position: fixed;
+  top: 0;
+  left: 0;
   filter: brightness(50%) blur(8px);
 }
 

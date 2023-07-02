@@ -8,6 +8,10 @@ class Vector2D {
     return new Vector2D(this.x + vector.x, this.y + vector.y);
   }
 
+  subtract(vector) {
+    return new Vector2D(this.x - vector.x, this.y - vector.y);
+  }
+
   distance(vector) {
     return Math.sqrt(Math.pow(vector.y - this.y, 2) + Math.pow(vector.x - this.x, 2));
   }
