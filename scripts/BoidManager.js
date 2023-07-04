@@ -1,4 +1,266 @@
-const canvas = document.getElementById('boids-canvas');
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const boidSize = 0.01;
+const boidsCount = 5000;
+
+const logFps = true;
+
+const drawBoidsRange = false;
+const highlightBoidsInRange = false;
+
+const qTreeCapacity = 10;
+
+const minSpeed = 1;
+const maxSpeed = 2;
+const turnFactor = 0.1;
+
+const detectionRange = 40;
+const seperationRange = 8;
+const mouseAvoidanceRange = 30;
+
+const seperationWeight = 0.8;
+const alignmentWeight = 0.3;
+const cohesionWeight = 0.0005;
+
+const edgeMargin = 50;
+
+let boundary;
+let qTree;
+
+let mouseX, mouseY, mousedown;
+
+const boids = [];
+const boidsParticlePositions = new Float32Array(boidsCount * 3);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#boids-canvas')
+});
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+camera.position.z = 5;
+const controls = new OrbitControls(camera, renderer.domElement);
+
+/* const gridHelper = new THREE.GridHelper(100, 100);
+
+scene.add(gridHelper); */
+
+for (let i = 0; i < boidsCount; i++) {
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+  const position = new THREE.Vector2(x, y);
+  const velocity = new THREE.Vector2(Math.random() * 2 - 1, Math.random() * 2 - 1);
+  const boid = new Boid(position, velocity);
+  boids.push(boid);
+
+  const ndcX = (x / window.innerWidth) * 2 - 1;
+  const ndcY = -(y / window.innerHeight) * 2 + 1;
+  let ndcVector = new THREE.Vector3(ndcX, ndcY, 0.5);
+  ndcVector.unproject(camera);
+
+  boidsParticlePositions[i * 3] = ndcVector.x;
+  boidsParticlePositions[i * 3 + 1] = ndcVector.y;
+  boidsParticlePositions[i * 3 + 2] = ndcVector.z;
+}
+
+const particleGeometry = new THREE.BufferGeometry();
+particleGeometry.setAttribute('position', new THREE.BufferAttribute(boidsParticlePositions, 3));
+
+const particleMaterial = new THREE.PointsMaterial({
+  size: boidSize,
+  transparent: true,
+  opacity: 0.15
+});
+
+const particles = new THREE.Points(particleGeometry, particleMaterial);
+
+scene.add(particles);
+
+
+document.addEventListener('mousemove', function (event) {
+  mouseX = event.clientX;
+  mouseY = event.clientY;
+
+  /*   cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  
+    cursoroutline.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`; */
+});
+
+document.addEventListener('mousedown', function () {
+  mousedown = true;
+});
+
+document.addEventListener('mouseup', function () {
+  mousedown = false;
+});
+
+
+function createQuadTree() {
+  boundary = new Rectangle(0, 0, window.innerWidth, window.innerHeight);
+  qTree = new QuadTree(boundary, qTreeCapacity);
+}
+
+let prevTime = Date.now();
+let frames = 0;
+let calculatedFps = [];
+
+function logFPS() {
+  const time = Date.now();
+  frames++;
+  if (time > prevTime + 1000) {
+    let fps = Math.round((frames * 1000) / (time - prevTime));
+    prevTime = time;
+    frames = 0;
+
+    calculatedFps.push(fps);
+    // console.info('FPS: ', fps);
+
+    let countedFrames = 0;
+    calculatedFps.forEach(frame => countedFrames += frame);
+    console.info('avg. FPS: ', Math.round(countedFrames / calculatedFps.length));
+  }
+}
+
+
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  createQuadTree();
+
+  // Update and draw each boid
+  for (let i = 0; i < boidsCount; i++) {
+    const boid = boids[i];
+    qTree.insert(boid);
+
+    let range = new Rectangle(boid.position.x - detectionRange / 2, boid.position.y - detectionRange / 2, detectionRange, detectionRange);
+    let boidsInRange = [];
+    qTree.query(range, boidsInRange);
+
+
+    if (mousedown) {
+      boid.velocity.x = mouseX - boid.position.x;
+      boid.velocity.y = mouseY - boid.position.y;
+    }
+
+    if (Math.sqrt(Math.pow(mouseY - boid.position.y, 2) + Math.pow(mouseX - boid.position.x, 2)) <= mouseAvoidanceRange) {
+      const oppositevx = -(mouseX - boid.position.x);
+      const oppositevy = -(mouseY - boid.position.y);
+
+      boid.velocity.x = oppositevx;
+      boid.velocity.y = oppositevy;
+
+      limitVelocity(boid);
+    }
+
+    nextMove(boid, boidsInRange);
+
+
+    boid.update(window.innerWidth, window.innerHeight, turnFactor, edgeMargin);
+
+
+    const ndcX = (boid.position.x / window.innerWidth) * 2 - 1;
+    const ndcY = -(boid.position.y / window.innerHeight) * 2 + 1;
+    let ndcVector = new THREE.Vector3(ndcX, ndcY, 0.5);
+    ndcVector.unproject(camera);
+
+    boidsParticlePositions[i * 3] = ndcVector.x;
+    boidsParticlePositions[i * 3 + 1] = ndcVector.y;
+    boidsParticlePositions[i * 3 + 2] = ndcVector.z;
+    /*     if (drawBoidsRange) {
+          drawBoidRange(boid);
+        }
+        if (highlightBoidsInRange) {
+          drawNearbyBoids(boid, boidsInRange);
+        } */
+  }
+
+    if (logFps) {
+      logFPS();
+    }
+  
+/*     qTree.show(context); */
+
+  particleGeometry.setAttribute('position', new THREE.BufferAttribute(boidsParticlePositions, 3))
+
+  controls.update();
+
+  renderer.render(scene, camera);
+}
+
+function nextMove(currentBoid, nearbyBoids) {
+  let seperation = new THREE.Vector2(0, 0);
+  let alignment = new THREE.Vector2(0, 0);
+  let cohesion = new THREE.Vector2(0, 0);
+  let nearbyBoidCount = 0;
+
+  for (let boid of nearbyBoids) {
+    if (currentBoid !== boid) {
+      nearbyBoidCount++;
+
+      if (currentBoid.position.distanceTo(boid.position) <= seperationRange) {
+        seperation.x += currentBoid.position.x - boid.position.x;
+        seperation.y += currentBoid.position.y - boid.position.y;
+      } else if (currentBoid.position.distanceTo(boid.position) <= detectionRange) {
+
+        alignment.x += boid.velocity.x;
+        alignment.y += boid.velocity.y;
+
+        cohesion.x += boid.position.x;
+        cohesion.y += boid.position.y;
+      }
+
+    }
+  }
+
+  if (nearbyBoidCount > 0) {
+    alignment.x /= nearbyBoidCount;
+    alignment.y /= nearbyBoidCount;
+    cohesion.x /= nearbyBoidCount;
+    cohesion.y /= nearbyBoidCount;
+
+    cohesion.x -= currentBoid.position.x;
+    cohesion.y -= currentBoid.position.y;
+
+    currentBoid.velocity.x += alignment.x * alignmentWeight;
+    currentBoid.velocity.y += alignment.y * alignmentWeight;
+
+    currentBoid.velocity.x += cohesion.x * cohesionWeight;
+    currentBoid.velocity.y += cohesion.y * cohesionWeight;
+  }
+
+  currentBoid.velocity.x += seperation.x * seperationWeight;
+  currentBoid.velocity.y += seperation.y * seperationWeight;
+
+  limitVelocity(currentBoid);
+}
+
+function limitSteering(steering, maxSteeringForce) {
+  // If the steering acceleration exceeds the maximum force, limit it
+  if (steering.lengthSq() > maxSteeringForce * maxSteeringForce) {
+    steering.normalize().multiplyScalar(maxSteeringForce);
+  }
+}
+
+function limitVelocity(boid) {
+  let speed = Math.sqrt(boid.velocity.x * boid.velocity.x + boid.velocity.y * boid.velocity.y);
+
+  if (speed > maxSpeed) {
+    boid.velocity.x = (boid.velocity.x / speed) * maxSpeed;
+    boid.velocity.y = (boid.velocity.y / speed) * maxSpeed;
+  } else if (speed < minSpeed) {
+    boid.velocity.x = (boid.velocity.x / speed) * minSpeed;
+    boid.velocity.y = (boid.velocity.y / speed) * minSpeed;
+  }
+}
+
+animate();
+
+/* const canvas = document.getElementById('boids-canvas');
 const context = canvas.getContext('2d');
 
 let cursor = document.querySelector('.cursor');
@@ -255,3 +517,4 @@ for (let i = 0; i < numOfBoids; i++) {
 }
 
 updateBoids();
+ */

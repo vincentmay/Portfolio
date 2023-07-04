@@ -7,45 +7,71 @@ const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg')
 });
 
-renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setZ(30);
 
-const controls = new OrbitControls( camera, renderer.domElement);
+camera.position.z = 1;
+const controls = new OrbitControls(camera, renderer.domElement);
 
-const gridHelper = new THREE.GridHelper(window.innerWidth, window.innerHeight);
-const axesHelper = new THREE.AxesHelper(window.innerWidth);
-scene.add(gridHelper, axesHelper);
+const gridHelper = new THREE.GridHelper(100, 100);
+scene.add(gridHelper);
 
-const ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(ambientLight);
+const particleCount = 1000;
+const particleSize = 0.001;
 
 const boids = [];
+const particlePositions = new Float32Array(particleCount * 3);
 
-function addTestBoids() {
-    const geometry = new THREE.ConeGeometry(0.5, 1.5, 8);
-    const material = new THREE.MeshStandardMaterial( { color: 0xffffff } );
-    const testBoid = new THREE.Mesh(geometry, material);
+for (let i = 0; i < particleCount; i++) {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
 
-    const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100))
+    const ndcX = (x / window.innerWidth) * 2 - 1;
+    const ndcY = -(y / window.innerHeight) * 2 + 1;
+    let position = new THREE.Vector3(ndcX, ndcY, 0.5);
+    boids.push(position.unproject(camera));
 
-    testBoid.position.set(x, y, z);
-    scene.add(testBoid);
-    boids.push(testBoid);
+    particlePositions[i * 3] = boids[i].x;
+    particlePositions[i * 3 + 1] = boids[i].y;
+    particlePositions[i * 3 + 2] = boids[i].z;
 }
+
+const particleGeometry = new THREE.BufferGeometry();
+particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+const particleMaterial = new THREE.PointsMaterial({
+    size: particleSize
+});
+
+const particles = new THREE.Points(particleGeometry, particleMaterial);
+
+scene.add(particles);
+
+/* function updateParticlePositions() {
+    // Update particle positions
+    for (let i = 0; i < particleCount; i++) {
+        // Increment the X position by 1 (you can adjust this value)
+        boids[i].x += .01;
+
+        // Update the particle buffer positions
+        particlePositions[i * 3] = boids[i].x;
+        particlePositions[i * 3 + 1] = boids[i].y;
+        particlePositions[i * 3 + 2] = boids[i].z;
+
+        
+    }
+
+    // Update the particle buffer with the new positions
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+} */
 
 function animate() {
     requestAnimationFrame(animate);
 
-    for (let boid of boids) {
-        
-    }
+    controls.update();
 
-    renderer.render(scene, camera);
-}
+/*     updateParticlePositions(); */
 
-for (let i = 0; i < 100; i++) {
-    addTestBoids()
+    renderer.render(scene, camera)
 }
 
 animate();

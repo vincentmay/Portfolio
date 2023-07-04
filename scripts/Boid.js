@@ -2,10 +2,9 @@
  * A bird-like object, simulating flock behaviour
  */
 class Boid {
-  constructor(position, velocity, size) {
+  constructor(position, velocity) {
     this.position = position;
     this.velocity = velocity;
-    this.size = size;
   }
 
   // Udpating the boids Position
@@ -27,7 +26,7 @@ class Boid {
   }
 
   // Drawing the Boid onto the display as an Square
-  draw(context) {
+/*   draw(context) {
     const x = this.position.x - (this.size / 2);
     const y = this.position.y - (this.size / 2);
 
@@ -35,5 +34,5 @@ class Boid {
     context.fillStyle = "rgba(255, 255, 255, .15)";
     context.rect(x, y, this.size, this.size);
     context.fill();
-  }
+  } */
 }
