@@ -2,15 +2,12 @@
   position: fixed;
   top: 0;
   left: 0;
-  filter: brightness(50%) blur(8px);
+  filter: brightness(50%) blur(6px);
 }
 
 /* Start Section */
-#start-section {
+#landing-page {
   height: 100vh;
-}
-
-.container {
   position: absolute;
   top: 0;
   width: 100%;
@@ -21,8 +18,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  min-height: 100vh;
 }
 
 .container>h1 {
