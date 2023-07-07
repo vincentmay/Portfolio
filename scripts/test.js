@@ -2,69 +2,122 @@ import * as THREE from 'three';
 
 const canvas = document.getElementById('test');
 const context = canvas.getContext('2d');
-console.log(context);
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let width = window.innerWidth;
+let height = window.innerHeight;
 
-let inc = 0.05;
-let scl = 20;
-let cols = Math.floor(canvas.width / scl);
-let rows = Math.floor(canvas.height / scl);
+canvas.width = width;
+canvas.height = height;
+
+const logFps = true;
+const drawFlowField = true;
+
+const inc = 0.1;
+const scl = 40;
+let cols = Math.floor(width / scl);
+let rows = Math.floor(height / scl);
 
 let zOff = 0;
 
-let particles = [];
-let particleCount = 1000;
+const particles = [];
+const particleCount = 500;
 
-let flowField = [];
-flowField = new Array(cols * rows);
+const flowField = new Array(cols * rows);
+
+const maxw = width - 100;
+const minw = 100;
+const maxh = height - 100;
+const minh = 100;
+
+const TWO_PI = Math.PI * 2;
+
+noiseDetail(6, 0.25);
 
 for (let i = 0; i < particleCount; i++) {
-  let position = new THREE.Vector2(Math.random() * canvas.width - 2 * 50, Math.random() * canvas.height - 2 * 50);
-  let velocity = new THREE.Vector2(0, 0);
-  let accaleration = new THREE.Vector2(0, 0);
+
+  const position = new THREE.Vector2(Math.random() * (maxw - minw) + minw, Math.random() * (maxh - minh) + minh);
+  const velocity = new THREE.Vector2(0, 0);
+  const accaleration = new THREE.Vector2(0, 0);
   particles[i] = new Particle(position, velocity, accaleration);
 }
 
+window.addEventListener('resize', () => {
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  cols = Math.floor(width / scl);
+  rows = Math.floor(height / scl);
+
+  canvas.width = width;
+  canvas.height = height;
+});
+
+
+let lastFrameTime = performance.now();
+let frameCount = 0;
+let totalElapsedTime = 0;
+
 function animate() {
-/*   context.clearRect(0, 0, canvas.width, canvas.height); */
+  const currentFrame = performance.now();
+  const deltaTime = (currentFrame - lastFrameTime) / 1000;
+
+  context.clearRect(0, 0, width, height);
 
   let yOff = 0;
   for (let y = 0; y < rows; y++) {
     let xOff = 0;
     for (let x = 0; x < cols; x++) {
-      let index = x + y * cols;
-      let angle = noise(xOff, yOff, zOff) * Math.PI * 2;
-      let vector = createVectorFromAngle(angle);
+      const index = x + y * cols;
+      const angle = noise(xOff, yOff, zOff) * TWO_PI;
+      const vector = createVectorFromAngle(angle);
       flowField[index] = vector;
-/*       context.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-      context.save();
 
-      context.translate(x * scl, y * scl);
-      context.rotate(vector.angle());
+      if (drawFlowField) {
+        context.strokeStyle = 'rgba(255, 255, 255, 1)';
+        context.save();
 
-      context.beginPath();
-      context.moveTo(0, 0);
-      context.lineTo(scl, 0);
-      context.stroke();
+        context.translate(x * scl, y * scl);
+        context.rotate(vector.angle());
 
-      context.restore(); */
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(scl, 0);
+        context.stroke();
+
+        context.restore();
+      }
       xOff += inc;
     }
     yOff += inc;
   }
-    zOff += 0.003;
+  zOff += 0.01;
 
-  for (let particle of particles) {
+
+  for (let i = 0; i < particles.length; i++) {
+    const particle = particles[i];
     particle.follow(flowField, scl, cols);
-    particle.update();
-    particle.wrap(canvas.width, canvas.height);
+    particle.update(deltaTime);
+    particle.wrap(width, height);
     particle.show(context);
   }
 
-  requestAnimationFrame(animate);
+  if (logFps) {
+    frameCount++;
+    totalElapsedTime += deltaTime;
 
+    if (totalElapsedTime >= 1) {
+      const fps = frameCount / totalElapsedTime;
+      console.log(`FPS: ${fps.toFixed(2)}`);
+
+      frameCount = 0;
+      totalElapsedTime = 0;
+    }
+  }
+
+
+  lastFrameTime = currentFrame;
+  requestAnimationFrame(animate);
 }
 
 function createVectorFromAngle(angle) {
