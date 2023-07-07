@@ -20,7 +20,7 @@ let rows = Math.floor(height / scl);
 let zOff = 0;
 
 const particles = [];
-const particleCount = 250;
+const particleCount = 3000;
 
 const flowField = new Array(cols * rows);
 
@@ -61,6 +61,11 @@ function animate() {
   const currentFrame = performance.now();
   const deltaTime = (currentFrame - lastFrameTime) / 1000;
 
+  context.beginPath();
+  context.fillStyle = 'black';
+  context.globalAlpha = 0.01;
+  context.fillRect(0, 0, width, height);
+
   /* context.clearRect(0, 0, width, height); */
 
   let yOff = 0;
@@ -91,7 +96,7 @@ function animate() {
     }
     yOff += inc;
   }
-  zOff += 0.01;
+  zOff += 0.005;
 
 
   for (let i = 0; i < particles.length; i++) {
