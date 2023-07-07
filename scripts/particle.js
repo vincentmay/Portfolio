@@ -3,12 +3,14 @@ class Particle {
     this.position = position;
     this.velocity = velocity;
     this.acceleration = acceleration;
-    this.maxSpeed = 0.5;
-    this.color = { r: 0, g: Math.random() * (255 - 175) + 175, b: Math.random() * (255 - 175) + 175 }
+    this.maxSpeed = 1;
+    this.color = { r: 0, g: Math.random() * (255 - 100) + 100, b: Math.random() * (255 - 175) + 175 }
 
     this.maxLength = 100;
     this.positions = [];
     this.positions.push(this.position.clone());
+
+    this.prevPos = this.position.clone();
   }
 
   update(deltaTime) {
@@ -42,7 +44,7 @@ class Particle {
     context.globalAlpha = .2;
     context.lineWidth = 10;
 
-    context.beginPath();
+/*     context.beginPath();
 
     for (let i = 1; i < this.positions.length; i++) {
       const prevPosition = this.positions[i - 1];
@@ -59,19 +61,31 @@ class Particle {
     }
 
 
+    context.stroke(); */
+
+
+    context.beginPath();
+    context.moveTo(this.prevPos.x, this.prevPos.y);
+    context.lineTo(this.position.x, this.position.y);
     context.stroke();
+
+    this.prevPos = this.position.clone();
   }
 
   wrap(width, height) {
     if (this.position.x > width) {
       this.position.x = 0;
+      this.prevPos = this.position.clone();
     } else if (this.position.x < 0) {
       this.position.x = width;
+      this.prevPos = this.position.clone();
     }
     if (this.position.y > height) {
       this.position.y = 0;
+      this.prevPos = this.position.clone();
     } else if (this.position.y < 0) {
       this.position.y = height;
+      this.prevPos = this.position.clone();
     }
   }
 }
