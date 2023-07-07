@@ -3,12 +3,12 @@ class Particle {
     this.position = position;
     this.velocity = velocity;
     this.acceleration = acceleration;
-    this.maxSpeed = 1;
+    this.maxSpeed = 2;
     this.color = { r: 0, g: Math.random() * (255 - 100) + 100, b: Math.random() * (255 - 175) + 175 }
 
-    this.maxLength = 100;
+/*     this.maxLength = 100;
     this.positions = [];
-    this.positions.push(this.position.clone());
+    this.positions.push(this.position.clone()); */
 
     this.prevPos = this.position.clone();
   }
@@ -19,10 +19,10 @@ class Particle {
     this.position.add(this.velocity);
     this.acceleration.multiplyScalar(0);
 
-    this.positions.push(this.position.clone());
+/*     this.positions.push(this.position.clone());
     if (this.positions.length > this.maxLength) {
       this.positions.shift();
-    }
+    } */
   }
 
   follow(vectors, scl, cols) {
@@ -41,8 +41,8 @@ class Particle {
 
   show(context) {
     context.strokeStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
-    context.globalAlpha = .2;
-    context.lineWidth = 10;
+    context.globalAlpha = 1;
+    context.lineWidth = 2;
 
 /*     context.beginPath();
 
