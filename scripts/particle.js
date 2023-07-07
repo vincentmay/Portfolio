@@ -1,46 +1,77 @@
 class Particle {
-    constructor(position, velocity, acceleration) {
-        this.position = position;
-        this.velocity = velocity;
-        this.acceleration = acceleration;
-        this.maxSpeed = 0.3;
-        this.color = 0;
+  constructor(position, velocity, acceleration) {
+    this.position = position;
+    this.velocity = velocity;
+    this.acceleration = acceleration;
+    this.maxSpeed = 0.5;
+    this.color = { r: 0, g: Math.random() * (255 - 175) + 175, b: Math.random() * (255 - 175) + 175 }
+
+    this.maxLength = 100;
+    this.positions = [];
+    this.positions.push(this.position.clone());
+  }
+
+  update(deltaTime) {
+    this.velocity.add(this.acceleration.clone().multiplyScalar(deltaTime));
+    this.velocity.clampLength(0, this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.multiplyScalar(0);
+
+    this.positions.push(this.position.clone());
+    if (this.positions.length > this.maxLength) {
+      this.positions.shift();
     }
+  }
 
-    update() {
-        this.velocity.add(this.acceleration);
-        this.velocity.clampLength(0, this.maxSpeed);
-        this.position.add(this.velocity);
-        this.acceleration.multiplyScalar(0);
+  follow(vectors, scl, cols) {
+    const x = Math.floor(this.position.x / scl);
+    const y = Math.floor(this.position.y / scl);
+    const index = x + y * cols;
+
+    if (index >= 0 && index < vectors.length) {
+      this.applyForce(vectors[index]);
     }
+  }
 
-    follow(vectors, scl, cols) {
-        let x = Math.floor(this.position.x / scl);
-        let y = Math.floor(this.position.y / scl);
-        let index = x + y * cols;
-      
-        if (index >= 0 && index < vectors.length) {
-          let force = vectors[index];
-          this.applyForce(force);
-        }
-      }
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
 
-    applyForce(force) {
-        this.acceleration.add(force);
-    }
+  show(context) {
+    context.strokeStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+    context.globalAlpha = .2;
+    context.lineWidth = 10;
 
-    show(context) {
+    context.beginPath();
+
+    for (let i = 1; i < this.positions.length; i++) {
+      const prevPosition = this.positions[i - 1];
+      const currentPosition = this.positions[i];
+      const distance = prevPosition.distanceTo(currentPosition);
+
+      if (distance < context.lineWidth * 2) {
+        context.lineTo(currentPosition.x, currentPosition.y);
+      } else {
+        context.stroke();
         context.beginPath();
-        context.fillStyle = `rgba(128, 0, 128, 0.02)`;
-        this.color += 0.1;
-        context.rect(this.position.x, this.position.y, 2, 2);
-        context.fill();
+        context.moveTo(currentPosition.x, currentPosition.y);
+      }
     }
 
-    wrap(width, height) {
-        if (this.position.x > width) this.position.x = 0;
-        if (this.position.x < 0) this.position.x = width;
-        if (this.position.y > height) this.position.y = 0;
-        if (this.position.y < 0) this.position.y = height;
+
+    context.stroke();
+  }
+
+  wrap(width, height) {
+    if (this.position.x > width) {
+      this.position.x = 0;
+    } else if (this.position.x < 0) {
+      this.position.x = width;
     }
+    if (this.position.y > height) {
+      this.position.y = 0;
+    } else if (this.position.y < 0) {
+      this.position.y = height;
+    }
+  }
 }
