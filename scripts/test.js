@@ -10,7 +10,7 @@ canvas.width = width;
 canvas.height = height;
 
 const logFps = true;
-const drawFlowField = true;
+const drawFlowField = false;
 
 const inc = 0.1;
 const scl = 40;
@@ -20,7 +20,7 @@ let rows = Math.floor(height / scl);
 let zOff = 0;
 
 const particles = [];
-const particleCount = 500;
+const particleCount = 250;
 
 const flowField = new Array(cols * rows);
 
@@ -61,7 +61,7 @@ function animate() {
   const currentFrame = performance.now();
   const deltaTime = (currentFrame - lastFrameTime) / 1000;
 
-  context.clearRect(0, 0, width, height);
+  /* context.clearRect(0, 0, width, height); */
 
   let yOff = 0;
   for (let y = 0; y < rows; y++) {
