@@ -3,14 +3,14 @@ class Particle {
     this.position = position;
     this.velocity = velocity;
     this.acceleration = acceleration;
-    this.maxSpeed = 1;
+    this.maxSpeed = 5;
     this.color = { r: 0, g: 0, b: 0 }
 
-    /*     this.maxLength = 1000;
-        this.positions = [];
-        this.positions.push(this.position.clone()); */
+    this.maxLength = 100;
+    this.positions = [];
+    this.positions.push(this.position.clone());
 
-    this.prevPos = this.position.clone();
+    /* this.prevPos = this.position.clone(); */
   }
 
   update(width, height, deltaTime) {
@@ -23,10 +23,10 @@ class Particle {
 
     this.wrap(width, height);
 
-    /*     this.positions.push(this.position.clone());
-        if (this.positions.length > this.maxLength) {
-          this.positions.shift();
-        } */
+    this.positions.push(this.position.clone());
+    if (this.positions.length > this.maxLength) {
+      this.positions.shift();
+    }
   }
 
   calculateColor(width, height) {
@@ -55,37 +55,37 @@ class Particle {
   }
 
   show(context) {
-    /*     context.strokeStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
-        context.globalAlpha = 0.5;
-        context.lineWidth = 25;
-    
-        context.beginPath();
-    
-        for (let i = 1; i < this.positions.length; i++) {
-          const prevPosition = this.positions[i - 1];
-          const currentPosition = this.positions[i];
-          const distance = prevPosition.distanceTo(currentPosition);
-    
-          if (distance < context.lineWidth * 2) {
-            context.lineTo(currentPosition.x, currentPosition.y);
-          } else {
-            context.beginPath();
-            context.moveTo(currentPosition.x, currentPosition.y);
-          }
-        }
-    
-        context.stroke(); */
-
     context.strokeStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+    context.globalAlpha = 0.5;
+    context.lineWidth = 25;
+
+    context.beginPath();
+
+    for (let i = 1; i < this.positions.length; i++) {
+      const prevPosition = this.positions[i - 1];
+      const currentPosition = this.positions[i];
+      const distance = prevPosition.distanceTo(currentPosition);
+
+      if (distance < context.lineWidth * 2) {
+        context.lineTo(currentPosition.x, currentPosition.y);
+      } else {
+        context.beginPath();
+        context.moveTo(currentPosition.x, currentPosition.y);
+      }
+    }
+
+    context.stroke();
+
+    /* context.strokeStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
     context.globalAlpha = 0.1;
     context.lineWidth = 2;
     context.beginPath();
     context.moveTo(this.prevPos.x, this.prevPos.y);
     context.lineTo(this.position.x, this.position.y);
-    context.stroke();
+    context.stroke(); */
     /* context.fillRect(this.position.x, this.position.y, 1, 1); */
 
-    this.prevPos = this.position.clone();
+    /* this.prevPos = this.position.clone(); */
   }
 
   wrap(width, height) {

@@ -9,10 +9,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  filter: blur(12px) contrast(200%);
+/*   filter: blur(12px) contrast(200%);
   background-color: black;
   transform: scale(1.1);
-  z-index: -1;
+  z-index: -1; */
 }
 
 /* Start Section */

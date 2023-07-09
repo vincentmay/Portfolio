@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 2</title>
+
+    <!-- Tree.js CDN -->
+    <script defer async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script defer
+        type="importmap"> { "imports": { "three": "https://unpkg.com/three@0.154.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.154.0/examples/jsm/" } } </script>
+
+        <script defer src="../scripts/particle.js"></script>
+        <script defer src="../scripts/perlinnoise.js"></script>
+    <script defer type="module" src="test2.js"></script>
+</head>
+
+<body>
+    <canvas id="test2"></canvas>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</body>
+
+</html>
