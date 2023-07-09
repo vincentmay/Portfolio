@@ -20,13 +20,16 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/navigation.css">
 
-  <script defer src="scripts/quadtree.js"></script>
+  <!-- <script defer src="scripts/quadtree.js"></script>
   <script defer src="scripts/boid.js"></script>
-  <script defer type="module" src="scripts/boidmanager.js"></script>
+  <script defer type="module" src="scripts/boidmanager.js"></script> -->
+  <script src="scripts/particle.js"></script>
+  <script src="scripts/perlinnoise.js"></script>
+  <script type="module" src="scripts/flowfield.js"></script>
 </head>
 
 <body>
-  <canvas id="boids-canvas"></canvas>
+  <canvas id="flowfield"></canvas>
 
   <nav>
     <a class="nav-link" href="#first-section">ABOUT ME</a>
@@ -35,8 +38,8 @@
   </nav>
 
   <section id="landing-page">
-      <h1>JUNIOR FRONT END SOFTWARE DEVELOPER</h1>
-      <h2>Vincent May</h2>
+      <h1 id="title">JUNIOR FRONT END SOFTWARE DEVELOPER</h1>
+      <h2 id="name">Vincent May</h2>
   </section>
 
   <section id="first-section">

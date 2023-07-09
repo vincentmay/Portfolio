@@ -4,8 +4,8 @@ body {
 }
 
 canvas {
-  position: absolute;
+  position: f;
   top: 0;
   left: 0;
-  filter: blur(10px);
+  filter: blur(8px) contrast(150%);
 }

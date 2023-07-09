@@ -1,32 +1,40 @@
-#boids-canvas {
+/* #boids-canvas {
   position: fixed;
   top: 0;
   left: 0;
   filter: brightness(50%) blur(6px);
+} */
+
+#flowfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  filter: blur(12px) contrast(200%);
+  background-color: black;
+  transform: scale(1.1);
+  z-index: -1;
 }
 
 /* Start Section */
 #landing-page {
   height: 100vh;
-  position: absolute;
-  top: 0;
-  width: 100%;
+  width: 100vw;
 
   color: white;
 
-  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  z-index: 2;
 }
 
-.container>h1 {
-  font-size: 8vw;
+#title {
+  font-size: 4vh;
   margin: 0;
 }
 
-.container>h2 {
-  background: linear-gradient(150deg,
+#name {
+  font-size: 4vh;
+/*   background: linear-gradient(150deg,
       #2b70d9 10%,
       #2c73da 20%,
       #3078da 30%,
@@ -45,7 +53,7 @@
 
   font-size: 4vw;
   font-weight: 300;
-  margin: 0;
+  margin: 0; */
 }
 
 @keyframes textShine {

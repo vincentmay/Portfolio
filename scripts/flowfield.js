@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 
-const canvas = document.getElementById('test');
-const context = canvas.getContext('2d');
+const canvas = document.getElementById('flowfield');
+const context = canvas.getContext('2d', { willReadFrequently: true });
+context.willReadFrequently = true;
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -13,29 +14,24 @@ const logFps = true;
 const drawFlowField = false;
 
 const inc = 0.1;
-const scl = 40;
+const scl = 24;
 let cols = Math.floor(width / scl);
 let rows = Math.floor(height / scl);
 
 let zOff = 0;
 
 const particles = [];
-const particleCount = 3000;
+const particleCount = 1000;
 
 const flowField = new Array(cols * rows);
 
-const maxw = width - 100;
-const minw = 100;
-const maxh = height - 100;
-const minh = 100;
-
 const TWO_PI = Math.PI * 2;
 
-noiseDetail(6, 0.25);
+noiseDetail(4, 0.75);
 
 for (let i = 0; i < particleCount; i++) {
 
-  const position = new THREE.Vector2(Math.random() * (maxw - minw) + minw, Math.random() * (maxh - minh) + minh);
+  const position = new THREE.Vector2(Math.random() * width, Math.random() * height);
   const velocity = new THREE.Vector2(0, 0);
   const accaleration = new THREE.Vector2(0, 0);
   particles[i] = new Particle(position, velocity, accaleration);
@@ -63,7 +59,7 @@ function animate() {
 
   context.beginPath();
   context.fillStyle = 'black';
-  context.globalAlpha = 0.01;
+  context.globalAlpha = 0.005;
   context.fillRect(0, 0, width, height);
 
   /* context.clearRect(0, 0, width, height); */
@@ -96,15 +92,15 @@ function animate() {
     }
     yOff += inc;
   }
-  zOff += 0.005;
+  zOff += 0.002;
 
 
   for (let i = 0; i < particles.length; i++) {
     const particle = particles[i];
     particle.follow(flowField, scl, cols);
-    particle.update(deltaTime);
-    particle.wrap(width, height);
+    particle.update(width, height, deltaTime);
     particle.show(context);
+    particle.prevPos = particle.position.clone();
   }
 
   if (logFps) {
@@ -120,9 +116,33 @@ function animate() {
     }
   }
 
+  /* filterDarkColors(context); */
 
   lastFrameTime = currentFrame;
   requestAnimationFrame(animate);
+}
+
+function filterDarkColors(context) {
+  const imageData = context.getImageData(0, 0, width, height);
+  const data = imageData.data;
+
+  // Loop through each pixel
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+
+    const brightness = (r + g + b) / 3;
+
+    // Check if pixel is dark (adjust threshold as needed)
+    if (brightness < 15) {
+      data[i] = 0; // Set red channel to 0
+      data[i + 1] = 0; // Set green channel to 0
+      data[i + 2] = 0; // Set blue channel to 0
+    }
+  }
+
+  context.putImageData(imageData, 0, 0);
 }
 
 function createVectorFromAngle(angle) {
