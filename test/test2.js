@@ -15,14 +15,14 @@ const material = new THREE.LineBasicMaterial({
   vertexColors: false,
   color: new THREE.Color(.3, .3, 1),
   transparent: true,
-  opacity: 0.5
+  opacity: 0.1
 });
 
 // Config
 const inc = 0.1;
 const scl = 20;
 const particleCount = 500;
-const positionsMaxLength = 1000;
+const positionsMaxLength = 100;
 noiseDetail(4, 0.5);
 
 let rows = Math.floor(height / scl);
@@ -92,7 +92,7 @@ function animate() {
     const particle = particles[i];
     particle.follow(flowField, scl, cols);
     particle.update(width, height, deltaTime);
-    particle.updateLinePositions();
+    particle.updateLinePositions(width, height);
   }
 
   lineGeometry.attributes.position.needsUpdate = true;

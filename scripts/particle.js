@@ -10,7 +10,6 @@ class Particle {
 
     this.linePositions = linePositions;
     this.index = index;
-    /* this.initLinePositions(); */
   }
 
   update(width, height, deltaTime) {
@@ -54,48 +53,26 @@ class Particle {
     }
   }
 
-  initLinePositions() {
-    const startIndex = this.index * (this.maxLength * 3);
-
-    for (let i = 0; i < this.maxLength; i++) {
-      const posIndex = startIndex + i * 3;
-
-      this.linePositions[posIndex + 0] = this.position.x;
-      this.linePositions[posIndex + 1] = this.position.y;
-      this.linePositions[posIndex + 2] = 0;
-    }
-  }
-
   updateLinePositions() {
     const startIndex = this.index * (this.maxLength * 3);
 
-    if (this.positions.length !== this.maxLength) {
-      for (let i = this.position.length - 1; i < this.maxLength; i++) {
-        const posIndex = startIndex + i * 3;
-
-        this.linePositions[posIndex + 0] = this.position.x;
-        this.linePositions[posIndex + 1] = this.position.y;
-        this.linePositions[posIndex + 2] = 0;
-      }
-    }
-
     for (let i = 0; i < this.positions.length; i++) {
-
       const currentPos = this.positions[i];
       const posIndex = startIndex + i * 3;
 
       this.linePositions[posIndex + 0] = currentPos.x;
       this.linePositions[posIndex + 1] = currentPos.y;
       this.linePositions[posIndex + 2] = 0;
+    }
 
-      /* if (this.linePositions[posIndex + 3] === 0 &&
-        this.linePositions[posIndex + 4] === 0) {
-        for (let j = posIndex; j < this.maxLength - i - 1; j++) {
-          const updateIndex = posIndex + j * 3;
-          this.linePositions[updateIndex + 0] = currentPos.x;
-          this.linePositions[updateIndex + 1] = currentPos.y;
-        }
-      } */
+    if (this.positions.length !== this.maxLength) {
+      for (let i = this.positions.length; i < this.maxLength; i++) {
+        const posIndex = startIndex + i * 3;
+
+        this.linePositions[posIndex + 0] = this.position.x;
+        this.linePositions[posIndex + 1] = this.position.y;
+        this.linePositions[posIndex + 2] = 0;
+      }
     }
   }
 }
