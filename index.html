@@ -16,57 +16,40 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-  <link rel="stylesheet" href="css/general.css">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="styles/flowfield.css">
+  <link rel="stylesheet" href="styles/general.css">
+  <link rel="stylesheet" href="styles/home.css">
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/navigation.css">
 
-  <!-- <script defer src="scripts/quadtree.js"></script>
-  <script defer src="scripts/boid.js"></script>
-  <script defer type="module" src="scripts/boidmanager.js"></script> -->
-  <script src="scripts/particle.js"></script>
-  <script src="scripts/perlinnoise.js"></script>
-  <script type="module" src="scripts/flowfield.js"></script>
+  <script defer src="scripts/particle.js"></script>
+  <script defer src="scripts/perlinnoise.js"></script>
+  <script defer type="module" src="scripts/flowfield.js"></script>
+
+  <script defer src="scripts/animation.js"></script>
 </head>
 
 <body>
   <canvas id="flowfield"></canvas>
 
-  <nav>
+  <!--   <nav>
     <a class="nav-link" href="#first-section">ABOUT ME</a>
     <a class="nav-link" href="#second-section">ROADMAP</a>
     <a class="nav-link" href="#third-section">PROJECTS</a>
-  </nav>
+  </nav> -->
 
-  <section id="landing-page">
+  <section class="page" id="home">
+    <div class="title-container">
       <h1 id="title">JUNIOR FRONT END SOFTWARE DEVELOPER</h1>
-      <h2 id="name">Vincent May</h2>
-  </section>
-
-  <section id="first-section">
-    <h1 id="first-text">
-      WORK IN PROGRESS
-    </h1>
-    <div id="first-div">
-
+      <h1 id="name">Vincent May</h1>
     </div>
+
+    <a href="#about-me" class="arrow-down"></a>
   </section>
 
-  <section id="second-section">
-    <div id="second-div">
-
-    </div>
-    <h1 id="second-text">
-
-    </h1>
-  </section>
-
-  <section id="third-section">
+  <section class="page" id="about-me">
 
   </section>
-
-  <footer>
-
-  </footer>
 </body>
 
 </html>

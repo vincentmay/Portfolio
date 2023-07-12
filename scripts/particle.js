@@ -3,7 +3,7 @@ class Particle {
     this.position = position;
     this.velocity = velocity;
     this.acceleration = acceleration;
-    this.maxSpeed = 1;
+    this.maxSpeed = 5;
 
     this.maxLength = positionsMaxLength;
     this.positions = [];
@@ -63,16 +63,6 @@ class Particle {
       this.linePositions[posIndex + 0] = currentPos.x;
       this.linePositions[posIndex + 1] = currentPos.y;
       this.linePositions[posIndex + 2] = 0;
-    }
-
-    if (this.positions.length !== this.maxLength) {
-      for (let i = this.positions.length; i < this.maxLength; i++) {
-        const posIndex = startIndex + i * 3;
-
-        this.linePositions[posIndex + 0] = this.position.x;
-        this.linePositions[posIndex + 1] = this.position.y;
-        this.linePositions[posIndex + 2] = 0;
-      }
     }
   }
 }

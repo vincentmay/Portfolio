@@ -4,7 +4,7 @@ import * as THREE from 'three';
 const inc = 0.1;
 const scl = 20;
 const particleCount = 500;
-const positionsMaxLength = 1000;
+const positionsMaxLength = 1500;
 noiseDetail(4, 0.5);
 const logfps = true;
 
@@ -20,9 +20,10 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 const material = new THREE.PointsMaterial({
+  size: 1,
   color: new THREE.Color(.3, .3, 1),
   transparent: true,
-  opacity: 0.2
+  opacity: 0.3
 });
 
 let rows = Math.floor(height / scl);
@@ -62,8 +63,8 @@ scene.add(lineMesh);
 function setup() {
   for (let i = 0; i < particleCount; i++) {
     const position = new THREE.Vector2(Math.random() * width, Math.random() * height);
-    const velocity = new THREE.Vector2(Math.random() * 2 - 1, Math.random() * 2 - 1);
-    const acceleration = new THREE.Vector2(0, 0);
+    const velocity = new THREE.Vector2();
+    const acceleration = new THREE.Vector2();
     particles[i] = new Particle(position, velocity, acceleration, linePositions, i, positionsMaxLength);
   }
 }

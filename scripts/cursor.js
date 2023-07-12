@@ -6,13 +6,10 @@ links.forEach(link => {
     link.addEventListener('mouseover', () => {
         cursor.classList.add('cursor-hover');
         cursoroutline.classList.add('cursor-outline-hover');
-        console.log("hover!!!");
     });
     link.addEventListener('mouseleave', () => {
-        console.log(cursor.classList);
         cursor.classList.remove('cursor-hover');
         cursoroutline.classList.remove('cursor-outline-hover');
-        console.log("remove :c hover!!!");
     })
 });
 
