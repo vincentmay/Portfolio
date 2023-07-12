@@ -1,5 +1,13 @@
 import * as THREE from 'three';
 
+// Config
+const inc = 0.1;
+const scl = 20;
+const particleCount = 500;
+const positionsMaxLength = 1000;
+noiseDetail(4, 0.5);
+const logfps = true;
+
 let width = window.innerWidth;
 let height = window.innerHeight;
 
@@ -11,19 +19,11 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-const material = new THREE.LineBasicMaterial({
-  vertexColors: false,
+const material = new THREE.PointsMaterial({
   color: new THREE.Color(.3, .3, 1),
   transparent: true,
-  opacity: 0.1
+  opacity: 0.2
 });
-
-// Config
-const inc = 0.1;
-const scl = 20;
-const particleCount = 500;
-const positionsMaxLength = 100;
-noiseDetail(4, 0.5);
 
 let rows = Math.floor(height / scl);
 let cols = Math.floor(width / scl);
@@ -54,26 +54,22 @@ window.addEventListener('resize', () => {
 const lineGeometry = new THREE.BufferGeometry();
 const linePositions = new Float32Array(particleCount * 3 * positionsMaxLength);
 
-for (let i = 0; i < particleCount; i++) {
-  const position = new THREE.Vector2(Math.random() * width, Math.random() * height);
-  const velocity = new THREE.Vector2(Math.random() * 2 - 1, Math.random() * 2 - 1);
-  const acceleration = new THREE.Vector2(0, 0);
-  particles[i] = new Particle(position, velocity, acceleration, linePositions, i, positionsMaxLength);
-}
-
 lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 
-const lineMesh = new THREE.LineSegments(lineGeometry, material);
+const lineMesh = new THREE.Points(lineGeometry, material);
 scene.add(lineMesh);
 
-let lastFrameTime = performance.now();
-let frameCount = 0;
-let fps = 0;
+function setup() {
+  for (let i = 0; i < particleCount; i++) {
+    const position = new THREE.Vector2(Math.random() * width, Math.random() * height);
+    const velocity = new THREE.Vector2(Math.random() * 2 - 1, Math.random() * 2 - 1);
+    const acceleration = new THREE.Vector2(0, 0);
+    particles[i] = new Particle(position, velocity, acceleration, linePositions, i, positionsMaxLength);
+  }
+}
 
-function animate() {
-  const currentFrame = performance.now();
-  const deltaTime = (currentFrame - lastFrameTime) / 1000;
 
+function updateFlowfield() {
   let yOff = 0;
   for (let y = 0; y < rows; y++) {
     let xOff = 0;
@@ -87,7 +83,9 @@ function animate() {
     yOff += inc;
   }
   zOff += 0.002;
+}
 
+function updateParticles(deltaTime) {
   for (let i = 0; i < particles.length; i++) {
     const particle = particles[i];
     particle.follow(flowField, scl, cols);
@@ -96,9 +94,9 @@ function animate() {
   }
 
   lineGeometry.attributes.position.needsUpdate = true;
+}
 
-  renderer.render(scene, camera);
-
+function logFps(currentFrame) {
   frameCount++;
   const elapsedTime = (currentFrame - lastFrameTime) / 1000;
   if (elapsedTime >= 1) {
@@ -107,6 +105,20 @@ function animate() {
     lastFrameTime = currentFrame;
     console.log('FPS: ', fps);
   }
+}
+
+function animate() {
+  const currentFrame = performance.now();
+  const deltaTime = (currentFrame - lastFrameTime) / 1000;
+
+  updateFlowfield();
+
+  updateParticles(deltaTime);
+
+
+  renderer.render(scene, camera);
+
+  if (logfps) logFps(currentFrame);
 
   requestAnimationFrame(animate);
 }
@@ -116,5 +128,12 @@ function createVectorFromAngle(angle) {
   const y = Math.sin(angle);
   return new THREE.Vector2(x, y);
 }
+
+
+setup();
+
+let lastFrameTime = performance.now();
+let frameCount = 0;
+let fps = 0;
 
 animate();
