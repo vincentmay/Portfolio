@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@100;300;400;700;900&family=Roboto:wght@100;300;400;700;900&display=swap');
+
 
 * {
     margin: 0;
     padding: 0;
 
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Kanit', sans-serif;
 
     transition: all 0.2s ease;
 
@@ -26,6 +28,27 @@ body {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+::selection {
+    background-color: white;
+    color: black;
+}
+
+header {
+    position: fixed;
+    top: 12px;
+    right: 24px;
+}
+
+header:hover > i > a {
+    cursor: pointer;
+    display: flex;
+}
+
+header > i > a {
+    font-weight: 300;
+    font-size: 1.25rem;
 }
 
 .page {
