@@ -20,7 +20,7 @@
   padding: 0.75em;
   rotate: 45deg;
 
-  position: fixed;
+  position: absolute;
   bottom: 10vh;
 }
 
