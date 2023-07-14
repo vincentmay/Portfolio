@@ -1,5 +1,5 @@
 #flowfield {
   position: fixed;
   z-index: 0;
-  filter: blur(6px) contrast(115%) brightness(200%);
+  filter: blur(6px) contrast(110%) brightness(250%);
 }

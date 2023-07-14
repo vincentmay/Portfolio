@@ -6,12 +6,13 @@
 
 .title-container {
   width: 100%;
-  margin: 4rem;
+  margin: 8rem;
 }
 
 .title {
-  font-size: 4rem;
+  font-size: 6rem;
   font-weight: 600;
+  opacity: 0;
 }
 
 .arrow-down {
@@ -22,10 +23,6 @@
 
   position: absolute;
   bottom: 10vh;
-}
-
-#home > header > i {
-  
 }
 
 footer {
