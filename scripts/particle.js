@@ -3,7 +3,7 @@ class Particle {
     this.position = position;
     this.velocity = velocity;
     this.acceleration = acceleration;
-    this.maxSpeed = 5;
+    this.maxSpeed = 1;
 
     this.maxLength = positionsMaxLength;
     this.positions = [];
