@@ -14,14 +14,17 @@
     }
   }
 
-  // Dark mode support
+  // Listen for changes in the user's color scheme preference
   onMount(() => {
+    // Check initial preference
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     applyTheme(mediaQuery.matches);
 
+    // Listen for changes
     const listener = (event: MediaQueryListEvent) => applyTheme(event.matches);
     mediaQuery.addEventListener('change', listener);
 
+    // Cleanup listener on component destroy
     onDestroy(() => {
       mediaQuery.removeEventListener('change', listener);
     });
