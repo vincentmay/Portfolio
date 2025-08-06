@@ -17,13 +17,25 @@ export function initScene(container: HTMLElement) {
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(width, height);
-  renderer.setClearColor(0x000000, 0); // Set background color to black
   container.appendChild(renderer.domElement);
+
+  window.addEventListener('resize', () => {
+    const newWidth = container.clientWidth;
+    const newHeight = container.clientHeight;
+
+    camera.left = -newWidth / 2;
+    camera.right = newWidth / 2;
+    camera.top = newHeight / 2;
+    camera.bottom = -newHeight / 2;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(newWidth, newHeight);
+  });
 
   return { scene, camera, renderer };
 }
 
-export function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer, camera: THREE.OrthographicCamera, container: HTMLElement): boolean {
+export function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer, camera: THREE.OrthographicCamera, container: HTMLElement) {
   const canvas = renderer.domElement;
   const width = container.clientWidth;
   const height = container.clientHeight;

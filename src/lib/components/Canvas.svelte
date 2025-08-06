@@ -13,8 +13,8 @@
     const { geometry, positions, velocities } = createParticles(particleCount);
     scene.add(geometry);
 
-    animate(() => {
-      updateParticles(positions, velocities);
+    animate((deltaTime: number) => {
+      updateParticles(positions, velocities, deltaTime);
       geometry.geometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
       resizeRendererToDisplaySize(renderer, camera, container);
