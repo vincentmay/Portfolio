@@ -22,4 +22,4 @@
   });
 </script>
 
-<div bind:this={container} class="w-full h-screen"></div>
+<div bind:this={container} class="h-screen w-full"></div>

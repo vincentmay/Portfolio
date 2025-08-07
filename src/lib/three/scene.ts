@@ -35,7 +35,11 @@ export function initScene(container: HTMLElement) {
   return { scene, camera, renderer };
 }
 
-export function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer, camera: THREE.OrthographicCamera, container: HTMLElement) {
+export function resizeRendererToDisplaySize(
+  renderer: THREE.WebGLRenderer,
+  camera: THREE.OrthographicCamera,
+  container: HTMLElement
+) {
   const canvas = renderer.domElement;
   const width = container.clientWidth;
   const height = container.clientHeight;
