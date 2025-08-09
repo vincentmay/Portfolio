@@ -29,5 +29,14 @@ export function updateParticles(pos: Float32Array, vel: Float32Array, deltaTime:
   for (let i = 0; i < vel.length / 2; i++) {
     pos[i * 3] += vel[i * 2] * speedMultiplier * deltaTime; // Update x
     pos[i * 3 + 1] += vel[i * 2 + 1] * speedMultiplier * deltaTime; // Update y
+
+    if (pos[i * 3] < -window.innerWidth / 2 || pos[i * 3] > window.innerWidth / 2) {
+      vel[i * 2] *= -1; // Reverse x velocity
+    }
+    if (pos[i * 3 + 1] < -window.innerHeight / 2 || pos[i * 3 + 1] > window.innerHeight / 2) {
+      vel[i * 2 + 1] *= -1; // Reverse y velocity
+    }
   }
+
+
 }
