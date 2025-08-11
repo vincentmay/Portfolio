@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Settings } from 'lucide-svelte';
   import { settings } from '$lib/settings.svelte';
   import * as Sheet from '$lib/components/ui/sheet/index';
   import Slider from './ui/slider/slider.svelte';
@@ -7,8 +6,10 @@
 </script>
 
 <Sheet.Root>
-  <Sheet.Trigger style="position: fixed; top: 1rem; right: 1rem;">
-    <Settings />Settings
+  <Sheet.Trigger style="position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);">
+    <div class="settings-trigger-wrapper">
+      Settings
+    </div>
   </Sheet.Trigger>
   <Sheet.Content>
     <Sheet.Close>Close</Sheet.Close>
@@ -24,3 +25,24 @@
     />
   </Sheet.Content>
 </Sheet.Root>
+
+<style>
+  .settings-trigger-wrapper {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: .5rem 1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+
+  .settings-trigger-wrapper:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .settings-trigger-wrapper:active {
+    transform: scale(0.95);
+  }
+</style>
