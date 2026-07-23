@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { LogoPlaceholder } from "./LogoPlaceholder";
+import { LogoMark } from "./LogoMark";
+import { createLogoCloud } from "./logoParticles";
 
 type ViewState = {
   pitch: number;
@@ -25,8 +26,20 @@ const CUBE_EDGES = [
   [0, 4], [1, 5], [2, 6], [3, 7],
 ] as const;
 
+// Logo unit space tops out near ±0.7; stretch it toward the ±1 cube.
+const LOGO_FIT = 1.4;
+const LOGO_CLOUD = createLogoCloud(2600);
+
 function radians(degrees: number) {
   return (degrees * Math.PI) / 180;
+}
+
+function fract(value: number) {
+  return value - Math.floor(value);
+}
+
+function seeded(index: number, salt: number) {
+  return fract(Math.sin(index * 91.173 + salt * 47.719) * 43758.5453);
 }
 
 function InspectionCanvas({ view }: { view: ViewState }) {
@@ -54,11 +67,11 @@ function InspectionCanvas({ view }: { view: ViewState }) {
       const sinY = Math.sin(yaw);
       const cosZ = Math.cos(roll);
       const sinZ = Math.sin(roll);
-      const scale = Math.min(bounds.width, bounds.height) * 0.18;
+      const scale = Math.min(bounds.width, bounds.height) * 0.26;
       const centerX = bounds.width / 2;
       const centerY = bounds.height / 2;
 
-      const projected = CUBE_VERTICES.map(([x, y, z]) => {
+      const project = (x: number, y: number, z: number) => {
         const yawX = x * cosY - z * sinY;
         const yawZ = x * sinY + z * cosY;
         const pitchY = y * cosX - yawZ * sinX;
@@ -69,25 +82,38 @@ function InspectionCanvas({ view }: { view: ViewState }) {
         return {
           x: centerX + rollX * scale * perspective,
           y: centerY + rollY * scale * perspective,
+          perspective,
         };
-      });
+      };
 
       context.save();
-      context.strokeStyle = "rgba(242, 241, 232, 0.34)";
+      context.strokeStyle = "rgba(242, 241, 232, 0.22)";
       context.lineWidth = 1;
       context.setLineDash([5, 7]);
+      const corners = CUBE_VERTICES.map(([x, y, z]) => project(x, y, z));
       for (const [from, to] of CUBE_EDGES) {
         context.beginPath();
-        context.moveTo(projected[from].x, projected[from].y);
-        context.lineTo(projected[to].x, projected[to].y);
+        context.moveTo(corners[from].x, corners[from].y);
+        context.lineTo(corners[to].x, corners[to].y);
         context.stroke();
       }
       context.restore();
 
-      context.fillStyle = "rgba(242, 241, 232, 0.72)";
-      context.beginPath();
-      context.arc(centerX, centerY, 2, 0, Math.PI * 2);
-      context.fill();
+      context.globalCompositeOperation = "lighter";
+      context.fillStyle = "#f2f1e8";
+      for (let index = 0; index < LOGO_CLOUD.count; index += 1) {
+        const point = project(
+          LOGO_CLOUD.x[index] * LOGO_FIT,
+          LOGO_CLOUD.y[index] * LOGO_FIT,
+          LOGO_CLOUD.z[index] * LOGO_FIT,
+        );
+        const sparkle = seeded(index, 61);
+        const size = (0.6 + sparkle * 0.9) * (0.6 + point.perspective * 0.45);
+        context.globalAlpha = 0.16 + sparkle * 0.4 + (point.perspective - 1) * 0.3;
+        context.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+      }
+      context.globalAlpha = 1;
+      context.globalCompositeOperation = "source-over";
     };
 
     draw();
@@ -96,7 +122,7 @@ function InspectionCanvas({ view }: { view: ViewState }) {
     return () => observer.disconnect();
   }, [view.pitch, view.roll, view.yaw]);
 
-  return <canvas ref={ref} aria-label="Empty 3D logo inspection volume" />;
+  return <canvas ref={ref} aria-label="3D particle structure of the mark" />;
 }
 
 function AngleControl({
@@ -124,8 +150,17 @@ function AngleControl({
   );
 }
 
+function initialView(): ViewState {
+  const requested = new URLSearchParams(window.location.search).get("view");
+  if (!requested) return PRESETS.Front;
+  const match = Object.keys(PRESETS).find(
+    (name) => name.toLowerCase() === requested.toLowerCase(),
+  );
+  return match ? PRESETS[match] : PRESETS.Front;
+}
+
 export default function LogoLab() {
-  const [view, setView] = useState<ViewState>(PRESETS.Front);
+  const [view, setView] = useState<ViewState>(initialView);
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -143,29 +178,32 @@ export default function LogoLab() {
     <main className="logo-lab">
       <header className="logo-lab-header">
         <div>
-          <p className="logo-lab-kicker">Empty implementation environment</p>
+          <p className="logo-lab-kicker">North-star mark — star & orbit ring</p>
           <h1>Logo Lab</h1>
         </div>
         <a className="logo-lab-back" href="/de">Back to portfolio</a>
       </header>
 
       <p className="logo-lab-notice">
-        All previous logo geometry has been removed. These neutral slots define only size, camera and integration boundaries.
+        Four-point north star with a tilted orbit ring, drawn from the silver
+        pendant reference: longest point down, slightly uneven tips, ring
+        passing in front below and behind above. The 2D mark is a single SVG;
+        the 3D structure shares its geometry with the hero particle state.
       </p>
 
       <section className="logo-lab-grid">
         <article className="logo-lab-panel">
           <header className="logo-lab-panel-head">
-            <p className="logo-lab-panel-label">2D slot</p>
-            <span>No mark implemented</span>
+            <p className="logo-lab-panel-label">2D mark</p>
+            <span>Solid star, orbit ring front/back</span>
           </header>
           <div className="logo-lab-vector-stage">
-            <LogoPlaceholder className="logo-placeholder-lab" label="2D logo slot empty" />
+            <LogoMark className="logo-mark-lab" title="Vincent May mark — north star with orbit ring" />
           </div>
-          <div className="logo-lab-sizes" aria-label="Empty logo scale slots">
+          <div className="logo-lab-sizes" aria-label="Logo scale tests">
             {[20, 32, 64, 128].map((size) => (
               <div className="logo-lab-size" key={size}>
-                <LogoPlaceholder className={`logo-placeholder-${size}`} />
+                <LogoMark className={`logo-mark-${size}`} />
                 <span>{size}px</span>
               </div>
             ))}
@@ -174,8 +212,8 @@ export default function LogoLab() {
 
         <article className="logo-lab-panel">
           <header className="logo-lab-panel-head">
-            <p className="logo-lab-panel-label">3D slot</p>
-            <span>Neutral inspection volume</span>
+            <p className="logo-lab-panel-label">3D structure</p>
+            <span>Star wireframe + true orbit torus</span>
           </header>
           <div className="logo-lab-canvas-stage">
             <InspectionCanvas view={view} />

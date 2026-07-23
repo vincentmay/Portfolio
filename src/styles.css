@@ -157,17 +157,8 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   color: var(--paper);
 }
 
-.logo-placeholder {
-  display: grid;
-  flex: none;
-  place-items: center;
-  color: var(--muted);
-  border: 1px dashed var(--line-strong);
-  background: rgba(242, 241, 232, 0.018);
-}
-
-.logo-placeholder-header { width: 20px; height: 20px; }
-.logo-placeholder > span { padding: 12px; text-align: center; }
+.logo-mark { display: block; flex: none; }
+.logo-mark-header { width: 21px; height: 21px; }
 
 .site-header nav { display: none; gap: clamp(18px, 3vw, 40px); }
 
@@ -553,14 +544,9 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
   background-size: 12.5% 12.5%;
 }
 
-.logo-placeholder-lab {
+.logo-mark-lab {
   width: min(54%, 360px);
   aspect-ratio: 1;
-  border-width: 2px;
-  font-family: "DM Mono", monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .logo-lab-sizes {
@@ -574,10 +560,10 @@ ol, ul { margin: 0; padding: 0; list-style: none; }
 }
 
 .logo-lab-size { display: grid; justify-items: center; gap: 10px; color: var(--muted); }
-.logo-placeholder-20 { width: 20px; height: 20px; }
-.logo-placeholder-32 { width: 32px; height: 32px; }
-.logo-placeholder-64 { width: 64px; height: 64px; }
-.logo-placeholder-128 { width: 128px; height: 128px; }
+.logo-mark-20 { width: 20px; height: 20px; }
+.logo-mark-32 { width: 32px; height: 32px; }
+.logo-mark-64 { width: 64px; height: 64px; }
+.logo-mark-128 { width: 128px; height: 128px; }
 
 .logo-lab-canvas-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 

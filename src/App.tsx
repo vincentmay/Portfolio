@@ -3,7 +3,7 @@ import { Link, Outlet, createRootRoute, createRoute, createRouter } from "@tanst
 import cutout from "./assets/vincent-may-about-cutout-v3.webp";
 import { copy, projects, social, type Locale } from "./content";
 import { CosmicUniverse } from "./CosmicUniverse";
-import { LogoPlaceholder } from "./LogoPlaceholder";
+import { LogoMark } from "./LogoMark";
 
 const LogoLab = lazy(() => import("./LogoLab"));
 
@@ -51,7 +51,7 @@ function Portfolio({ locale }: { locale: Locale }) {
       <div className="scrim" aria-hidden="true" />
       <header className="site-header shell">
         <Link to={locale === "de" ? "/de" : "/en"} className="wordmark" aria-label="Vincent May — Home">
-          <LogoPlaceholder className="logo-placeholder-header" />
+          <LogoMark className="logo-mark-header" />
           <span>Vincent May</span>
         </Link>
         <nav aria-label={locale === "de" ? "Hauptnavigation" : "Primary navigation"}>
@@ -201,7 +201,7 @@ function LegalPage({ page }: { page: "imprint" | "privacy" }) {
   return (
     <main className="legal shell">
       <header className="legal-head">
-        <Link to="/de" className="wordmark" aria-label="Vincent May — Home"><LogoPlaceholder className="logo-placeholder-header" /><span>Vincent May</span></Link>
+        <Link to="/de" className="wordmark" aria-label="Vincent May — Home"><LogoMark className="logo-mark-header" /><span>Vincent May</span></Link>
         <Link to="/de">← {copy.de.footer.back}</Link>
       </header>
       <article>
