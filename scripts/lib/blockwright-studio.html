@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Blockwright render studio</title><style>body{margin:0;background:#14141a}canvas{display:block}</style></head><body><script type="module">
+import * as THREE from 'three';
+import {EffectComposer} from '/node_modules/three/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from '/node_modules/three/examples/jsm/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from '/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from '/node_modules/three/examples/jsm/postprocessing/OutputPass.js';
+import {ShaderPass} from '/node_modules/three/examples/jsm/postprocessing/ShaderPass.js';
+const name=new URLSearchParams(location.search).get('build')||'fable_universe';
+const data=await(await fetch(`./blockwright/${name}.json`)).json();
+const bytes=await(await fetch(`./blockwright/${name}.bin`)).arrayBuffer();
+const count=data.vertices;let offset=0;
+const positions=new Float32Array(bytes,offset,count*3);offset+=data.bytes[0];
+const normals=new Int8Array(bytes,offset,count*3);offset+=data.bytes[1];
+const colors=new Uint8Array(bytes,offset,count*3);offset+=data.bytes[2];
+const emission=new Uint8Array(bytes,offset,count);
+const geometry=new THREE.BufferGeometry();
+geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
+geometry.setAttribute('normal',new THREE.BufferAttribute(normals,3,true));
+geometry.setAttribute('color',new THREE.BufferAttribute(colors,3,true));
+geometry.setAttribute('blockEmission',new THREE.BufferAttribute(emission,1,true));
+geometry.computeBoundingSphere();
+const emissionGain={value:2.5};
+function createMaterial(opacity=1){
+const material=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.9,metalness:0,opacity,transparent:opacity<1,depthWrite:opacity===1});
+material.onBeforeCompile=shader=>{
+ shader.uniforms.emissionGain=emissionGain;
+ shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute float blockEmission;varying float vBlockEmission;').replace('#include <begin_vertex>','#include <begin_vertex>\nvBlockEmission=blockEmission;');
+ shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nvarying float vBlockEmission;uniform float emissionGain;').replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance += vColor.rgb*vBlockEmission*emissionGain;');
+};return material;}
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
+document.body.append(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#14141a');
+if(data.groups){
+ for(const group of data.groups){
+  const part=geometry.clone();part.setDrawRange(group.start,group.count);
+  scene.add(new THREE.Mesh(part,createMaterial(group.opacity)));
+ }
+}else scene.add(new THREE.Mesh(geometry,createMaterial()));
+for(const mesh of scene.children){mesh.castShadow=!mesh.material.transparent;mesh.receiveShadow=true;}
+const ambientLight=new THREE.HemisphereLight(0xc8d1ff,0x181225,.75);scene.add(ambientLight);
+const key=new THREE.DirectionalLight(0xfff5df,2.5);key.position.set(-250,500,200);scene.add(key);
+key.shadow.mapSize.set(4096,4096);Object.assign(key.shadow.camera,{left:-350,right:350,top:350,bottom:-350,near:1,far:1500});key.shadow.camera.updateProjectionMatrix();key.shadow.bias=-.0001;
+const fillLight=new THREE.DirectionalLight(0x9688ff,.6);fillLight.position.set(300,100,-200);scene.add(fillLight);
+const practical=new THREE.PointLight(0xffc98d,0,200,2);scene.add(practical);
+const camera=new THREE.PerspectiveCamera(34,innerWidth/innerHeight,1,3000);
+const composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.3,.35,1);composer.addPass(bloom);
+const lens=new ShaderPass({uniforms:{tDiffuse:{value:null},strength:{value:0},inner:{value:.32},outer:{value:.68}},vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'uniform sampler2D tDiffuse;uniform float strength;uniform float inner;uniform float outer;varying vec2 vUv;void main(){vec4 color=texture2D(tDiffuse,vUv);float edge=smoothstep(inner,outer,length(vUv-0.5));color.rgb*=1.0-strength*edge;gl_FragColor=color;}'});composer.addPass(lens);composer.addPass(new OutputPass());
+window.studio={renderer,scene,camera,composer,bloom,data,render({x=410,y=390,z=-490,tx=0,ty=0,tz=0,exposure=1.1,strength=.15,fill=.6,keyPosition=[-250,500,200],keyIntensity=2.5,shadows=false,ambient=.75,emission=2.5,fogNear=0,fogFar=0,fov=34,bloomRadius=.35,bloomThreshold=1,vignette=0,vignetteInner=.32,vignetteOuter=.68,practicalIntensity=0,practicalPosition=[0,0,0],practicalColor=0xffc98d,practicalDistance=200}={}){camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();renderer.toneMappingExposure=exposure;bloom.strength=strength;bloom.radius=bloomRadius;bloom.threshold=bloomThreshold;lens.uniforms.strength.value=vignette;lens.uniforms.inner.value=vignetteInner;lens.uniforms.outer.value=vignetteOuter;practical.intensity=practicalIntensity;practical.position.fromArray(practicalPosition);practical.color.setHex(practicalColor);practical.distance=practicalDistance;fillLight.intensity=fill;ambientLight.intensity=ambient;emissionGain.value=emission;key.position.fromArray(keyPosition);key.intensity=keyIntensity;const fog=fogFar>fogNear?new THREE.Fog(scene.background,fogNear,fogFar):null;if(!!fog!==!!scene.fog)scene.traverse(object=>{if(object.isMesh)object.material.needsUpdate=true});scene.fog=fog;renderer.shadowMap.enabled=shadows;renderer.shadowMap.type=THREE.PCFSoftShadowMap;key.castShadow=shadows;composer.render();return true},resize(width=innerWidth,height=innerHeight){renderer.setSize(width,height);composer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();composer.render();return true}};
+window.studio.render();document.body.dataset.ready='true';
+</script></body></html>

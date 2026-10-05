@@ -5,17 +5,24 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "tsc -b && vite build && node scripts/prerender.mjs",
+    "preview": "vite preview",
+    "check": "npm run build && node scripts/smoke.mjs && node scripts/model-check.mjs",
+    "check:release": "node scripts/release-check.mjs",
+    "model:export": "node scripts/export-stellar.mjs",
+    "icons": "node scripts/icons.mjs",
+    "field:preview": "node scripts/preview.mjs"
   },
   "dependencies": {
     "@tanstack/react-router": "1.170.17",
     "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react-dom": "19.2.7",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
+    "@types/three": "^0.186.0",
     "typescript": "5.8.3",
     "vite": "7.3.6"
   }

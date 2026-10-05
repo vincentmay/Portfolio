@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /demos/
+Disallow: /d/
+Disallow: /designs
+Disallow: /logo-lab
+Sitemap: https://vincentmay.com/sitemap.xml

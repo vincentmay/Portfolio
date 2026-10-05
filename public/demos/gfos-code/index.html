@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="description" content="A walkthrough of GFOS Code using screenshots from the actual application: ticket context, repository worktrees, and Stack services." />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta name="theme-color" content="#131315" />
+<title>GFOS Code · Workflow walkthrough</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="./walkthrough.css" />
+<script src="./walkthrough.js" type="module"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="wrap">
+<a class="identity" href="/en"><img src="/stellar.svg" width="28" height="28" alt="" />vincent.may</a>
+<a class="back" href="/en/work/gfos-code">Back to the project <span aria-hidden="true">↗</span></a>
+</header>
+<main id="main" class="wrap" tabindex="-1">
+<section class="intro" aria-labelledby="title">
+<p class="eyebrow">GFOS Code</p>
+<h1 id="title">A ticket becomes<br />a workspace<span>.</span></h1>
+<div class="intro-bottom">
+<p>Bring the requirements, repository threads, and application services into the same place. Here’s what that looks like in the actual app.</p>
+<nav aria-label="Walkthrough sections"><a href="#ticket">Ticket <span aria-hidden="true">↓</span></a><a href="#setup">Setup <span aria-hidden="true">↓</span></a><a href="#build">Build <span aria-hidden="true">↓</span></a><a href="#services">Services <span aria-hidden="true">↓</span></a></nav>
+</div>
+<p class="capture-note">Captured from the current application with fictional tickets and isolated sample repositories. The real orchestration runs against test stubs for Maven, WildFly, npm, and the JDK; these captures do not demonstrate a company build or deployment.</p>
+</section>
+<section id="ticket" class="screen-section" aria-labelledby="ticket-title">
+<div class="section-heading"><h2 id="ticket-title">The context stays with the work.</h2><p>One ticket, four repositories.<br />A separate thread for each.</p></div>
+<figure>
+<img src="/projects/gfos-code.webp" width="1920" height="1080" alt="Actual GFOS Code ticket view with a fictional project's acceptance criteria, four repository threads, and running Stack status." fetchpriority="high" />
+<figcaption><span>Ticket context &amp; repository threads</span><button type="button" data-expand aria-label="Enlarge ticket screen">View full size <span aria-hidden="true">↗</span></button></figcaption>
+</figure>
+<div class="details">
+<div><h3>Start with the requirements</h3><p>The selected ticket keeps its release, version, description, and acceptance criteria beside the work. The developer can return to the brief without changing tools.</p></div>
+<div><h3>Keep repositories connected</h3><p>A whole-ticket checkout prepares its repository worktrees. Each has a coding-agent thread, while the ticket remains the shared reference. These sample worktrees and threads were created by the actual backend.</p></div>
+</div>
+</section>
+<section id="setup" class="screen-section" aria-labelledby="setup-title">
+<div class="section-heading"><h2 id="setup-title">Review the whole workspace.</h2><p>Ticket branches, release,<br />database, and deployable artifacts.</p></div>
+<figure>
+<img src="/projects/gfos-code-setup.webp" width="1920" height="1080" alt="Actual Stack setup with four ticket repositories, worktree preparation, database, backend connection and EAR selection." loading="lazy" />
+<figcaption><span>Stack setup · sample repositories</span><button type="button" data-expand aria-label="Enlarge Stack setup">View full size <span aria-hidden="true">↗</span></button></figcaption>
+</figure>
+<div class="details"><div><h3>Choose when to start services</h3><p>Prepare the worktrees first, or build and start the application. Existing matching checkouts and threads can be reused; the rest are created as part of setup.</p></div><div><h3>Keep the release context</h3><p>Review the selected release, database, backend connection, and EAR modules together before execution. Repository threads share the same ticket Stack.</p></div></div>
+</section>
+<section id="build" class="screen-section" aria-labelledby="build-title">
+<div class="section-heading"><h2 id="build-title">Inspect the build before it runs.</h2><p>Changed, Full build,<br />or an explicit module selection.</p></div>
+<figure>
+<img src="/projects/gfos-code-build.webp" width="1920" height="1080" alt="Actual Build preview showing five sample Java modules, module selection and separate compilation and deployment actions." loading="lazy" />
+<figcaption><span>Build preview · isolated test toolchain</span><button type="button" data-expand aria-label="Enlarge Build preview">View full size <span aria-hidden="true">↗</span></button></figcaption>
+</figure>
+<div class="details"><div><h3>Understand what will run</h3><p>Build previews explain module selection. Changed mode considers module inputs and affected consumers; full and selected builds provide explicit control.</p></div><div><h3>Keep compilation separate from deployment</h3><p>Build only compiles. Build and run deploys after success. Module results, output, diagnostics, and previous attempts remain inspectable in the Build view.</p></div></div>
+</section>
+<section id="services" class="screen-section" aria-labelledby="services-title">
+<div class="section-heading"><h2 id="services-title">Know what’s running.<br />And where.</h2><p>Build steps, service ports,<br />and the frontend’s backend.</p></div>
+<figure>
+<img src="/projects/gfos-code-services.webp" width="1920" height="1080" alt="Actual Services view with completed orchestration steps, two application-server port sets, a frontend dev server, and backend selection, using external toolchain stubs." loading="lazy" />
+<figcaption><span>Services · real orchestration, external toolchain stubs</span><button type="button" data-expand aria-label="Enlarge Stack services screen">View full size <span aria-hidden="true">↗</span></button></figcaption>
+</figure>
+<div class="details">
+<div><h3>Inspect the sequence</h3><p>The Services view exposes provisioning progress; the All steps control expands the worktree, build, deployment, and startup sequence. HTTP, management, and debug ports stay visible alongside the dev server and database.</p></div>
+<div><h3>Make ownership explicit</h3><p>The frontend can target the Stack’s own application server or a configured backend. The actual orchestration creates isolated worktrees and instances, assigns ports, and follows deployment and readiness markers. External executables are test stubs; this capture does not establish that a real Maven build or WildFly deployment succeeded.</p></div>
+</div>
+</section>
+<aside class="boundary" aria-labelledby="boundary-title"><h2 id="boundary-title">A personal prototype, built on T3 Code.</h2><p>My work adds ticket, repository, and runtime integration. The coding-agent harness and base clients come from <a href="https://github.com/pingdotgg/t3code" target="_blank" rel="noreferrer">T3 Code <span aria-hidden="true">↗</span></a>. This walkthrough contains screenshots, not a connected application session.</p><a class="return" href="/en/work/gfos-code">Read the engineering story <span aria-hidden="true">↗</span></a></aside>
+</main>
+<footer class="wrap"><span>Vincent May</span><a href="#main">Back to top ↑</a></footer>
+<dialog aria-labelledby="image-title">
+<div class="dialog-heading"><h2 id="image-title">Application screen</h2><button type="button" data-close autofocus>Close <span aria-hidden="true">×</span></button></div>
+<div class="image-scroll" tabindex="0" role="region" aria-label="Full-size application screen"><img id="full-image" alt="" /></div>
+<p>Scroll to inspect the screen. Press Escape to close.</p>
+</dialog>
+</body>
+</html>

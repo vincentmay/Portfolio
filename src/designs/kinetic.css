@@ -1,0 +1,392 @@
+/* Kinetic — hard grid, one accent, type as large as the measure allows. */
+
+:root[data-skin="kinetic"] {
+  color-scheme: dark;
+  background: #0b0b0c;
+}
+
+.kinetic {
+  --bg: #0b0b0c;
+  --ink: #f4f3ee;
+  --soft: rgb(244 243 238 / 0.6);
+  --accent: #ff4a1c;
+  --hair: rgb(244 243 238 / 0.18);
+  --gutter: clamp(18px, 4vw, 64px);
+
+  min-height: 100svh;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: var(--sans);
+  overflow-x: hidden;
+}
+
+.kinetic a {
+  color: inherit;
+}
+.kn-accent {
+  color: var(--accent);
+}
+
+/* head */
+
+.kn-head {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.9rem var(--gutter);
+  background: var(--bg);
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.kn-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-right: auto;
+  font-weight: 500;
+}
+.kn-mark {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+}
+.kn-head nav {
+  display: none;
+  gap: 1.5rem;
+}
+@media (min-width: 720px) {
+  .kn-head nav {
+    display: flex;
+  }
+}
+.kn-head nav a:hover {
+  color: var(--accent);
+}
+
+/* hero */
+
+.kn-hero {
+  padding: clamp(3rem, 9vw, 7rem) var(--gutter) clamp(2rem, 5vw, 4rem);
+}
+.kn-tag {
+  margin: 0 0 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.kn-tag b {
+  color: var(--accent);
+}
+.kn-hero h1 {
+  display: grid;
+  margin: 0;
+  font-size: clamp(3.2rem, 15vw, 12rem);
+  font-weight: 800;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+/* Each line wipes up from behind its own edge. */
+.kn-line {
+  display: block;
+  clip-path: inset(0 0 100% 0);
+  animation: kn-wipe 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.kn-line:nth-child(2) {
+  animation-delay: 140ms;
+}
+@keyframes kn-wipe {
+  to {
+    clip-path: inset(0 0 -0.15em 0);
+  }
+}
+.kn-lead {
+  max-width: 46ch;
+  margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--soft);
+}
+.kn-cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.85rem 1.6rem;
+  background: var(--accent);
+  color: #0b0b0c;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.kn-cta:hover {
+  background: var(--ink);
+}
+
+/* marquee */
+
+.kn-strip {
+  padding: 0.7rem 0;
+  border-block: 2px solid var(--ink);
+  background: var(--accent);
+  color: #0b0b0c;
+  overflow: hidden;
+}
+.kn-marquee {
+  display: flex;
+  width: max-content;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: kn-slide 22s linear infinite;
+}
+.kn-marquee span {
+  padding-right: 1.5rem;
+}
+@keyframes kn-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* sections */
+
+.kn-section {
+  padding: clamp(2.5rem, 6vw, 5rem) var(--gutter);
+  border-bottom: 1px solid var(--hair);
+}
+.kn-section > header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--ink);
+}
+.kn-idx {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.kn-section h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.kn-tools {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.kn-cards {
+  display: grid;
+  gap: 1px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+}
+@media (min-width: 780px) {
+  .kn-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.kn-cards article {
+  padding: 1.75rem;
+  background: var(--bg);
+}
+.kn-cards h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+.kn-cards p,
+.kn-work p {
+  margin: 0.4rem 0 0;
+  color: var(--soft);
+  line-height: 1.6;
+}
+
+.kn-work {
+  display: grid;
+  gap: 1px;
+  background: var(--hair);
+}
+.kn-work a {
+  position: relative;
+  display: block;
+  padding: 1.75rem;
+  background: var(--bg);
+  transition: background 200ms ease;
+}
+.kn-work a:hover {
+  background: var(--accent);
+  color: #0b0b0c;
+}
+.kn-work a:hover p,
+.kn-work a:hover .kn-tools,
+.kn-work a:hover .kn-kind {
+  color: #0b0b0c;
+}
+.kn-work h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.kn-kind {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--soft);
+}
+.kn-arrow {
+  position: absolute;
+  top: 1.75rem;
+  right: 1.75rem;
+  font-size: 1.3rem;
+}
+
+.kn-quote ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kn-quote li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+.kn-big {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+}
+.kn-quote h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.kn-quote p {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--soft);
+  line-height: 1.6;
+}
+
+.kn-about {
+  max-width: 62ch;
+}
+.kn-about p {
+  margin: 0 0 1rem;
+  color: var(--soft);
+  line-height: 1.65;
+}
+.kn-about .kn-lead {
+  color: var(--ink);
+  font-size: 1.3rem;
+  margin-top: 0;
+}
+.kn-about dl {
+  margin: 2rem 0 0;
+  border-top: 2px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+}
+.kn-about dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+.kn-about dt {
+  color: var(--soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.kn-about dd {
+  margin: 0;
+}
+
+/* contact */
+
+.kn-contact {
+  padding: clamp(3.5rem, 10vw, 8rem) var(--gutter);
+  background: var(--accent);
+  color: #0b0b0c;
+}
+.kn-contact h2 {
+  margin: 0 0 1rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.kn-contact > a {
+  display: inline-block;
+  font-size: clamp(1.6rem, 6.5vw, 5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+.kn-contact > a:hover {
+  color: var(--bg);
+}
+.kn-contact nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.kn-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1.5rem var(--gutter) 2.5rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.kn-foot a:hover {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kn-line {
+    animation: none;
+    clip-path: none;
+  }
+  .kn-marquee {
+    animation: none;
+  }
+}

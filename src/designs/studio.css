@@ -1,0 +1,318 @@
+/* Studio — paper white, one typeface, spacing doing all the work. */
+
+:root[data-skin="studio"] {
+  color-scheme: light;
+  background: #ffffff;
+}
+
+.studio {
+  --paper: #ffffff;
+  --ink: #0d0d0d;
+  --soft: #5d5d5d;
+  --hair: #e5e5e5;
+  --tint: #f7f7f5;
+  --gutter: clamp(20px, 5vw, 64px);
+
+  min-height: 100svh;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  font-weight: 400;
+  letter-spacing: -0.011em;
+}
+
+.studio a {
+  color: inherit;
+}
+.studio h1,
+.studio h2,
+.studio h3 {
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* nav */
+
+.st-nav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem var(--gutter);
+  background: rgb(255 255 255 / 0.86);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--hair);
+}
+.st-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-right: auto;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.st-mark {
+  width: 22px;
+  height: 22px;
+}
+.st-nav nav {
+  display: none;
+  gap: 1.75rem;
+  font-size: 0.9rem;
+  color: var(--soft);
+}
+.st-nav nav a:hover {
+  color: var(--ink);
+}
+@media (min-width: 760px) {
+  .st-nav nav {
+    display: flex;
+  }
+}
+
+.st-pill,
+.st-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.15rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.88rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity 200ms ease;
+}
+.st-pill:hover,
+.st-button:hover {
+  opacity: 0.82;
+}
+.st-button-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--hair);
+}
+
+/* hero */
+
+.st-hero {
+  padding: clamp(4rem, 12vw, 9rem) var(--gutter) clamp(3rem, 7vw, 5rem);
+  max-width: 1180px;
+}
+.st-eyebrow {
+  margin: 0 0 1.5rem;
+  font-size: 0.85rem;
+  color: var(--soft);
+}
+.st-hero h1 {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(2.4rem, 6.2vw, 4.6rem);
+  line-height: 1.04;
+}
+.st-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* blocks */
+
+.st-block {
+  padding: clamp(3rem, 7vw, 6rem) var(--gutter);
+  max-width: 1180px;
+  border-top: 1px solid var(--hair);
+}
+.st-h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+}
+.st-note {
+  margin: 0 0 2rem;
+  max-width: 52ch;
+  color: var(--soft);
+}
+.st-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+@media (min-width: 700px) {
+  .st-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .st-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.st-card,
+.st-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.6rem;
+  border-radius: 16px;
+  background: var(--tint);
+}
+.st-card h3,
+.st-tile h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.st-card p,
+.st-tile p {
+  margin: 0;
+  color: var(--soft);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+.st-tools {
+  font-size: 0.8rem !important;
+  color: #8a8a8a !important;
+}
+
+.st-tile {
+  transition:
+    background 220ms ease,
+    transform 220ms ease;
+}
+.st-tile:hover {
+  background: #f0efec;
+  transform: translateY(-2px);
+}
+.st-tile-kind,
+.st-tile-stack {
+  font-size: 0.78rem;
+  color: #8a8a8a;
+}
+.st-tile-go {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* about */
+
+.st-about {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+@media (min-width: 860px) {
+  .st-about {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  }
+}
+.st-about p {
+  max-width: 56ch;
+  margin: 0 0 1rem;
+  color: var(--soft);
+  line-height: 1.65;
+}
+.st-lead {
+  color: var(--ink) !important;
+  font-size: 1.15rem;
+}
+.st-facts {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  border-top: 1px solid var(--hair);
+}
+.st-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--hair);
+  font-size: 0.9rem;
+}
+.st-facts dt {
+  color: var(--soft);
+}
+.st-facts dd {
+  margin: 0;
+}
+.st-portrait {
+  margin: 0;
+  border-radius: 20px;
+  background: var(--tint);
+  overflow: hidden;
+}
+.st-portrait img {
+  display: block;
+  width: 100%;
+}
+
+/* steps */
+
+.st-steps {
+  display: grid;
+  gap: 0;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.st-steps li {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0.3rem 1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+.st-steps span {
+  grid-row: span 2;
+  color: #a3a3a3;
+  font-size: 0.85rem;
+  padding-top: 0.2rem;
+}
+.st-steps h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.st-steps p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--soft);
+  font-size: 0.94rem;
+}
+
+/* cta + footer */
+
+.st-cta {
+  padding: clamp(4rem, 10vw, 8rem) var(--gutter);
+  text-align: center;
+  background: var(--tint);
+}
+.st-cta h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+.st-cta p {
+  margin: 0 auto 2rem;
+  max-width: 46ch;
+  color: var(--soft);
+}
+.st-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: space-between;
+  padding: 2rem var(--gutter);
+  font-size: 0.85rem;
+  color: var(--soft);
+}
+.st-foot nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.st-foot a:hover {
+  color: var(--ink);
+}
