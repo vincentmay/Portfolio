@@ -5,6 +5,21 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## Return to the selected project — 5 October 2026
+
+- Reproduced “All projects” returning to the work heading at scrollY 800 and
+  showing GFOS Code regardless of the case study. Each case now links to its
+  own semantic project anchor. The measured gallery restores the matching card
+  instantly; stacked and reduced-motion layouts use ordinary anchor positioning.
+  Router top/hash scrolling and the view transition are disabled for this return
+  link to avoid competing with the gallery's positioning.
+- Actual navigation from all three case studies at 1440×900 returns the expected
+  active project and card top at 100px, below the header. At 390×844 each matching
+  stacked card lands within 1px of 100px without horizontal overflow. Direct
+  loading of the POVLINE anchor, three repeated open/return cycles, and an
+  instrumented reduced-motion return pass. No delayed top reset occurred.
+- `npm run check`, `npm run check:release`, and `git diff --check` pass.
+
 ## POVLINE layout showcase — 5 October 2026
 
 - Captured the real Brick Bois viewer after choosing “One main POV” in the app:

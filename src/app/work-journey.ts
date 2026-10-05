@@ -65,6 +65,16 @@ export function createWorkJourney(root: HTMLElement) {
         behavior: smooth ? "smooth" : "instant",
       });
   };
+  const showProject = (id: string) => {
+    const index = rows.findIndex((row) => row.id === `work-${id}`);
+    if (index < 0) return;
+    if (state) {
+      go(index, false);
+      draw(scrollY);
+    } else {
+      rows[index].scrollIntoView({ block: "start", behavior: "instant" });
+    }
+  };
   const click = (event: Event) => {
     const button = (event.target as Element).closest<HTMLButtonElement>(
       "[data-journey-index]",
@@ -112,5 +122,5 @@ export function createWorkJourney(root: HTMLElement) {
     });
     state = undefined;
   };
-  return { measure, draw, stop };
+  return { measure, draw, showProject, stop };
 }

@@ -1,4 +1,5 @@
 import { Mark } from "../brand/Mark";
+import { useLocation } from "@tanstack/react-router";
 import { StellarObject } from "../brand/StellarObject";
 import { usePortfolioMotion } from "../app/motion";
 import type { Locale } from "../content";
@@ -16,7 +17,8 @@ import { PortraitOrbit } from "../components/PortraitOrbit";
 
 export function Home({ locale }: { locale: Locale }) {
   const t = words[locale];
-  const motion = usePortfolioMotion(locale);
+  const hash = useLocation({ select: (location) => location.hash });
+  const motion = usePortfolioMotion(locale, hash.startsWith("work-") ? hash.slice(5) : undefined);
   useDocument(locale, `Vincent May — ${t.role}`, t.intro);
   return (
     <div className="portfolio portfolio-home" ref={motion}>
@@ -98,6 +100,7 @@ export function Home({ locale }: { locale: Locale }) {
                 <div className="selected-work">
                   {work.map((project) => (
                     <article
+                      id={`work-${project.id}`}
                       className={`work-row work-${project.id}`}
                       data-reveal
                       key={project.id}

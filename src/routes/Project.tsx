@@ -48,7 +48,14 @@ export function Project({ locale, id }: { locale: Locale; id: string }) {
       <Header locale={locale} project={id} />
       <main id="main" tabIndex={-1}>
         <section className="case-hero wrap" id="top">
-          <Link className="case-back text-link" to={`/${locale}`} hash="work">
+          <Link
+            className="case-back text-link"
+            to={`/${locale}`}
+            hash={`work-${id}`}
+            resetScroll={false}
+            hashScrollIntoView={false}
+            viewTransition={false}
+          >
             <Arrow direction="left" />
             {t.back}
           </Link>
