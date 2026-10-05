@@ -481,7 +481,7 @@ export const words = {
     "about": "About",
     "contact": "Contact",
     "role": "Full-stack developer",
-    "place": "Essen, Germany",
+    "place": "Hattingen, Germany",
     "heading": [
       "I build software.",
       "And the tools",
@@ -506,7 +506,7 @@ export const words = {
       "I tend to keep building."
     ],
     "aboutBody": [
-      "I’m a full-stack developer based in Essen, Germany. At GFOS mbH, I work with Java, React, and TypeScript on software people use in their working day.",
+      "I’m a full-stack developer based in Hattingen, Germany. At GFOS mbH, I work with Java, React, and TypeScript on software people use in their working day.",
       "Outside that work, I usually have a project open. Sometimes it removes friction from a build workflow. Sometimes it follows a story across livestreams. Sometimes it turns Python into a galaxy.",
       "I’m looking for a team where I can work close to the product, take responsibility for what I ship, and keep learning from people who care about their craft."
     ],
@@ -515,14 +515,14 @@ export const words = {
     "location": "Based in",
     "languages": "Languages",
     "languageValue": "German & English",
-    "opportunity": "Open to engineering roles",
+
     "contactIndex": "Contact",
     "contactTitle": [
       "Something in common?",
       "Let’s talk."
     ],
     "contactBody": "An interesting role, a project to build together, or a question about the work—my inbox is open.",
-    "footer": "Built in Essen, Germany.",
+    "footer": "Built in Hattingen, Germany.",
     "legal": "Legal notice / Impressum",
     "privacy": "Privacy",
     "top": "Back to top",

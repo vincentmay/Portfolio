@@ -32,7 +32,6 @@ export function Home({ locale }: { locale: Locale }) {
           <section className="hero wrap" aria-labelledby="hero-title">
             <div className="hero-copy">
               <p className="eyebrow">
-                <span className="status-dot" />
                 {t.role}
                 <span className="eyebrow-separator">/</span>
                 {t.place}
@@ -207,7 +206,7 @@ export function Home({ locale }: { locale: Locale }) {
                 </div>
                 <div>
                   <dt>{t.location}</dt>
-                  <dd>Essen, DE</dd>
+                  <dd>{t.place}</dd>
                 </div>
                 <div>
                   <dt>{t.languages}</dt>
@@ -250,10 +249,6 @@ export function Home({ locale }: { locale: Locale }) {
             </div>
             <div className="contact-side">
               <Mark className="contact-mark" />
-              <p className="opportunity">
-                <span className="status-dot" />
-                {t.opportunity}
-              </p>
               <a
                 className="text-link"
                 href="https://github.com/vincentmay"

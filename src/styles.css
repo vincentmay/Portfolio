@@ -129,14 +129,6 @@ ol {
   gap: 10px;
   color: var(--muted);
 }
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--green);
-  display: inline-block;
-  flex-shrink: 0;
-}
 .eyebrow-separator {
   margin-inline: 3px;
   color: #a0a297;
@@ -493,7 +485,7 @@ h2 {
 .contact-layout {
   display: grid;
 }
-.contact-layout > div > p:not(.opportunity) {
+.contact-layout > div > p {
   color: var(--muted);
   line-height: 1.9;
   margin-top: 22px;
@@ -516,13 +508,6 @@ h2 {
   justify-self: end;
   max-width: 310px;
   width: 100%;
-}
-.opportunity {
-  color: var(--green);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
 }
 .contact-side .text-link {
   border-bottom: 1px solid var(--line);
@@ -830,10 +815,6 @@ h2 {
     grid-template-columns: 1fr 1fr;
     column-gap: 25px;
   }
-  .opportunity {
-    grid-column: 1/-1;
-    margin-bottom: 0;
-  }
   .contact-email {
     font-size: 26px;
   }
@@ -1006,7 +987,7 @@ h2 {
   .contact-layout h2 {
     font-size: 35px;
   }
-  .contact-layout > div > p:not(.opportunity) {
+  .contact-layout > div > p {
     font-size: 14px;
   }
   .contact-email {
@@ -1015,9 +996,6 @@ h2 {
   }
   .contact-side .text-link {
     font-size: 14px;
-  }
-  .opportunity {
-    font-size: 11px;
   }
   .site-footer {
     flex-direction: column;
@@ -1186,9 +1164,6 @@ h2 {
   color: #b7b3be;
   font-size: 10px;
   letter-spacing: 0.065em;
-}
-.hero .status-dot {
-  background: var(--accent);
 }
 .hero .eyebrow-separator {
   color: #77717e;
@@ -1574,7 +1549,7 @@ h2 em {
   line-height: 1.02;
   letter-spacing: -0.075em;
 }
-.contact-layout > div > p:not(.opportunity) {
+.contact-layout > div > p {
   font-size: 14px;
   max-width: 425px;
 }
@@ -1592,9 +1567,6 @@ h2 em {
 }
 .contact-side {
   align-items: flex-start;
-}
-.opportunity {
-  font-size: 10px;
 }
 .site-footer {
   padding-block: 33px;
@@ -1878,9 +1850,6 @@ h2 em {
   .contact-mark {
     display: none;
   }
-  .opportunity {
-    width: 100%;
-  }
   .case-hero {
     padding-top: 120px;
   }
@@ -2049,7 +2018,7 @@ h2 em {
   .contact-layout h2 {
     font-size: 48px;
   }
-  .contact-layout > div > p:not(.opportunity) {
+  .contact-layout > div > p {
     font-size: 13px;
   }
   .contact-email {
