@@ -1,0 +1,5 @@
+# Keep the shipped document intact and allow only the portfolio's own scripts.
+# Cloudflare's automatic analytics injection respects no-transform.
+/*
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+  Content-Security-Policy: script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'

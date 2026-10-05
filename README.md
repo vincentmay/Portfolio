@@ -167,6 +167,9 @@ output directory to `dist`. The build includes a static `404.html` so Pages retu
 its error page for unknown URLs instead of implicitly serving the homepage.
 There is no catch-all `_redirects` rewrite to override the prerendered pages.
 The client also displays a noindex error page. Verify HTTP status after deploying.
-Confirm dashboard-managed analytics or security features against the privacy
-notice if these are enabled; the application includes no analytics of its own.
+`public/_headers` sends `no-transform` to prevent automatic Cloudflare analytics
+injection. The script/connection policy allows only this origin, so a provider
+beacon cannot execute even if injected. The application includes no analytics.
+Verify these response headers and browser requests after deployment; reassess
+the privacy notice if new third-party features are deliberately enabled.
 The GFOS walkthrough presents actual screens; it does not connect to an app.

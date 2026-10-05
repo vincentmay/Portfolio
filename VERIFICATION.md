@@ -5,6 +5,21 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## Live hosting verification — 5 October 2026
+
+- Commit `c34c3ad` deployed successfully to Cloudflare Pages. The public domain
+  serves all seven expected portfolio pages and the walkthrough with HTTP 200;
+  an unknown URL returns the prerendered HTTP 404. Twenty distinct directly
+  linked image/style/script assets checked on the public site return HTTP 200.
+- The live Chromium browser exposed a dashboard-managed Cloudflare Analytics
+  beacon, which was absent in the local app and non-browser HTTP response.
+  Added Pages response headers: `no-transform` prevents automatic injection
+  according to Cloudflare's documentation; script and connection sources are
+  restricted to this origin, preventing execution of an injected external beacon.
+  Local fonts, images, dynamic imports, and the WebGL star remain same-origin.
+- Reference: https://developers.cloudflare.com/web-analytics/get-started/
+- Reference: https://developers.cloudflare.com/pages/configuration/headers/
+
 ## Legal publication details — 5 October 2026
 
 - Researched the current provider-identification guidance from the NRW media
