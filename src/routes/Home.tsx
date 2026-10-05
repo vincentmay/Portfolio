@@ -18,7 +18,8 @@ import { PortraitOrbit } from "../components/PortraitOrbit";
 export function Home({ locale }: { locale: Locale }) {
   const t = words[locale];
   const hash = useLocation({ select: (location) => location.hash });
-  const motion = usePortfolioMotion(locale, hash.startsWith("work-") ? hash.slice(5) : undefined);
+  const smoothWorkReturn = useLocation({ select: (location) => location.state.smoothWorkReturn === true });
+  const motion = usePortfolioMotion(locale, hash.startsWith("work-") ? hash.slice(5) : undefined, smoothWorkReturn);
   useDocument(locale, `Vincent May — ${t.role}`, t.intro);
   return (
     <div className="portfolio portfolio-home" ref={motion}>

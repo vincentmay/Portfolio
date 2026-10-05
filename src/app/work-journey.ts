@@ -1,3 +1,5 @@
+import { settleScroll } from "./scroll";
+
 /** Native vertical scrolling carries a horizontal, image-first project chapter. */
 export function createWorkJourney(root: HTMLElement) {
   const journey = root.querySelector<HTMLElement>(".work-journey");
@@ -8,6 +10,7 @@ export function createWorkJourney(root: HTMLElement) {
     ...journey.querySelectorAll<HTMLButtonElement>("[data-journey-index]"),
   ];
   let state: { start: number; distance: number; stride: number } | undefined;
+  let cancelSettle = () => {};
   const resetRows = () =>
     rows.forEach((row) => row.style.removeProperty("--scene-focus"));
   const measure = () => {
@@ -65,14 +68,16 @@ export function createWorkJourney(root: HTMLElement) {
         behavior: smooth ? "smooth" : "instant",
       });
   };
-  const showProject = (id: string) => {
+  const showProject = (id: string, smooth = false) => {
     const index = rows.findIndex((row) => row.id === `work-${id}`);
     if (index < 0) return;
+    cancelSettle();
     if (state) {
-      go(index, false);
+      cancelSettle = settleScroll(state.start + index * state.stride, smooth);
       draw(scrollY);
     } else {
       rows[index].scrollIntoView({ block: "start", behavior: "instant" });
+      if (smooth) cancelSettle = settleScroll(scrollY, true);
     }
   };
   const click = (event: Event) => {
@@ -104,6 +109,7 @@ export function createWorkJourney(root: HTMLElement) {
   journey.addEventListener("click", click);
   document.addEventListener("keydown", key);
   const stop = () => {
+    cancelSettle();
     journey.removeEventListener("click", click);
     document.removeEventListener("keydown", key);
     delete journey.dataset.enabled;

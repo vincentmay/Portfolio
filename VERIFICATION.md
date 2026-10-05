@@ -5,6 +5,23 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## Gentle navigation scrolling — 5 October 2026
+
+- Section links and gallery controls retain native smooth scrolling. Returning
+  from a case study now adds a bounded 48px, 220ms ease into the matching project,
+  after the homepage gallery is measured. Direct project anchors remain instant.
+  Wheel/touch scrolling remains native; any wheel, touch, pointer, or keyboard
+  input cancels the short return animation, as does leaving the route.
+- Desktop Blockwright returns to scrollY 2627, card top 100px and left 56px;
+  mobile POVLINE returns to scrollY 2404, card top 99.5px, without overflow.
+  Instrumented wheel interruption stops subsequent animation writes. Reopening
+  a case during the return leaves the case at scrollY 0. Instrumented reduced
+  motion uses instant anchor placement and performs no animation scroll writes.
+- The collaborative preview throttles animation frames in background tabs;
+  positions were checked again after the frames completed. Clamping both ends
+  of animation progress prevents an earlier frame timestamp moving backwards.
+  `npm run check`, `npm run check:release`, and `git diff --check` pass.
+
 ## Return to the selected project — 5 October 2026
 
 - Reproduced “All projects” returning to the work heading at scrollY 800 and

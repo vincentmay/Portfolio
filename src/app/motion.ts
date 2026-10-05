@@ -13,13 +13,13 @@ function layoutTop(element: HTMLElement, root: HTMLElement) {
 }
 
 /** One native-scroll frame, stable geometry, and a direction-independent playhead. */
-export function usePortfolioMotion(key: string, workProjectId?: string) {
+export function usePortfolioMotion(key: string, workProjectId?: string, smoothWorkReturn = false) {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const element = root.current!;
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
     let stop = () => {};
-    let showProject = (id: string) => {
+    let showProject = (id: string, _smooth = false) => {
       const row = [...element.querySelectorAll<HTMLElement>(".work-row")]
         .find((row) => row.id === `work-${id}`);
       row?.scrollIntoView({ block: "start", behavior: "instant" });
@@ -104,12 +104,12 @@ export function usePortfolioMotion(key: string, workProjectId?: string) {
     start();
     // The gallery maps vertical scroll to horizontal cards. Restore its selected
     // project after measuring; native hash scrolling cannot identify that offset.
-    if (workProjectId) showProject(workProjectId);
+    if (workProjectId) showProject(workProjectId, smoothWorkReturn);
     preference.addEventListener("change", start);
     return () => {
       stop();
       preference.removeEventListener("change", start);
     };
-  }, [key, workProjectId]);
+  }, [key, workProjectId, smoothWorkReturn]);
   return root;
 }

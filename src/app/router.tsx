@@ -143,6 +143,9 @@ function EnglishProject() {
 }
 
 declare module "@tanstack/react-router" {
+  interface HistoryState {
+    smoothWorkReturn?: boolean;
+  }
   interface Register {
     router: typeof router;
   }

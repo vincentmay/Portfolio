@@ -52,6 +52,7 @@ export function Project({ locale, id }: { locale: Locale; id: string }) {
             className="case-back text-link"
             to={`/${locale}`}
             hash={`work-${id}`}
+            state={{ smoothWorkReturn: true }}
             resetScroll={false}
             hashScrollIntoView={false}
             viewTransition={false}
