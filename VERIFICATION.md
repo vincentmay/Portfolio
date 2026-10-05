@@ -5,6 +5,20 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## POVLINE screenshot refresh — 5 October 2026
+
+- Replaced the viewer and crew-discovery images with genuine 1920×1080 captures
+  from the running POVLINE application while four Brick Bois channels were live:
+  anthonyz, buddha, omie, and xqc. The roster includes all five directory members
+  and accurately shows sayeed as absent from the live feed.
+- The workspace retains its actual paused, source-provided previews and controls.
+  Captions and alternative text identify the crew and previews. No playback,
+  shared event, or synchronization is fabricated. The map/history captures remain.
+- Exported 960px and 1440px WebP variants alongside the full-size captures.
+  Reviewed both images inside the portfolio at 1440×900 and 390×844, with no
+  horizontal overflow; the roster's full-image view loads the 1920×1080 asset
+  and closes with Escape. `npm run check` and `npm run check:release` pass.
+
 ## Live hosting verification — 5 October 2026
 
 - Commit `c34c3ad` deployed successfully to Cloudflare Pages. The public domain

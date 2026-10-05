@@ -353,10 +353,10 @@ export const work: CaseStudy[] = [
     "imageWidth": 1920,
     "imageHeight": 1080,
     "alt": {
-      "en": "POVLINE’s actual four-pane viewer with Twitch and Kick stream previews for an LSPD crew."
+      "en": "POVLINE’s actual four-pane Brick Bois workspace with live Twitch channel previews from anthonyz, buddha, omie, and xqc."
     },
     "caption": {
-      "en": "Four-pane workspace · source-provided stream previews"
+      "en": "Brick Bois · four perspectives · source-provided live previews"
     },
     "intro": {
       "en": "A roleplay story unfolds across people, channels, and places. Following it through separate stream tabs loses the connections. POVLINE is an independent NoPixel viewing companion that joins those pieces: discover creators and crews, assemble the perspectives you care about, explore reported city events, and return to moments through broadcast history. I built the product experience and the data infrastructure together."
@@ -404,10 +404,10 @@ export const work: CaseStudy[] = [
         "imageWidth": 1920,
         "imageHeight": 1080,
         "alt": {
-          "en": "POVLINE’s actual authorities crew directory showing LSPD, medical, justice and other groups with roster sizes and available live perspectives."
+          "en": "POVLINE’s Brick Bois roster with five creators, four available live perspectives, stream previews, and controls for following or opening the crew together."
         },
         "caption": {
-          "en": "Crew discovery · public community data"
+          "en": "Brick Bois roster · four live perspectives · public community data"
         },
         "title": {
           "en": "Follow people, not a pile of tabs."
