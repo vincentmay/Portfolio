@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import type { Locale } from "../content";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-export function ImageViewer({ src, alt, caption, locale }: {
+export function ImageViewer({ src, alt, caption, aspectRatio, children }: {
   src: string;
   alt: string;
   caption: string;
-  locale: Locale;
+  aspectRatio: string;
+  children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!open) return;
     const previous = document.documentElement.style.overflow;
@@ -19,16 +20,26 @@ export function ImageViewer({ src, alt, caption, locale }: {
     };
   }, [open]);
   return <>
-    <button className="image-open" type="button" onClick={() => setOpen(true)}>
-      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9V5h4m6 0h4v4M5 15v4h4m6 0h4v-4" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
-      {"View full image"}
+    <button
+      className="screenshot-frame image-zoom"
+      type="button"
+      ref={trigger}
+      style={{ aspectRatio }}
+      aria-label={`Enlarge image: ${caption}`}
+      aria-haspopup="dialog"
+      onClick={() => setOpen(true)}
+    >
+      {children}
     </button>
     {open && (
       <dialog
         className="image-dialog"
         ref={dialog}
         aria-label={"Project image"}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          trigger.current?.focus({ preventScroll: true });
+        }}
         onClick={event => {
           if (event.target === event.currentTarget) dialog.current?.close();
         }}

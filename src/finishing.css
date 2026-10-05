@@ -133,8 +133,7 @@
   min-height: 0;
   object-fit: contain;
 }
-.case-image .project-visual figcaption,
-.case-image .project-visual .image-open { flex-shrink: 0; }
+.case-image .project-visual figcaption { flex-shrink: 0; }
 .motion-ready .case-image[data-reveal] { translate: none; }
 @media (max-width: 800px) {
   .case-image { --view-height: calc(100svh - 104px); }

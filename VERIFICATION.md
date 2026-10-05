@@ -5,6 +5,17 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## Direct image enlargement — 5 October 2026
+
+- Removed the separate enlargement control and its layout row from project
+  images. The image itself is a labelled native button with a zoom cursor and
+  an inset keyboard-focus outline; homepage project links remain unchanged.
+- Keyboard Enter opens the full-size modal, Escape closes it, scrolling unlocks,
+  and focus returns to the image without moving the page. Mobile direct activation
+  loads the 1920px asset. All three case studies fit at 390px with no horizontal
+  overflow; desktop POVLINE and Blockwright image presentations were reviewed.
+- `npm run check`, `npm run check:release`, and `git diff --check` pass.
+
 ## POVLINE screenshot refresh — 5 October 2026
 
 - Replaced the viewer and crew-discovery images with genuine 1920×1080 captures

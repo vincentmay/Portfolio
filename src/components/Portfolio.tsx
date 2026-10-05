@@ -189,6 +189,18 @@ export function ProjectVisual({
   large?: boolean;
   sizes?: string;
 }) {
+  const image = (
+    <img
+      src={project.image}
+      srcSet={project.imageSrcSet}
+      sizes={project.imageSrcSet ? sizes : undefined}
+      alt={project.alt[locale]}
+      width={project.imageWidth}
+      height={project.imageHeight}
+      loading="lazy"
+      decoding="async"
+    />
+  );
   return (
     <figure
       className={`project-visual visual-${project.id}${large ? " visual-large" : ""}`}
@@ -206,30 +218,17 @@ export function ProjectVisual({
           pathLength="1"
         />
       </svg>
-      <div
-        className="screenshot-frame"
-        style={large ? { aspectRatio: `${project.imageWidth} / ${project.imageHeight}` } : undefined}
-      >
-        <img
-          src={project.image}
-          srcSet={project.imageSrcSet}
-          sizes={project.imageSrcSet ? sizes : undefined}
-          alt={project.alt[locale]}
-          width={project.imageWidth}
-          height={project.imageHeight}
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-      <figcaption>{project.caption[locale]}</figcaption>
-      {large && (
+      {large ? (
         <ImageViewer
           src={project.image}
           alt={project.alt[locale]}
           caption={project.caption[locale]}
-          locale={locale}
-        />
-      )}
+          aspectRatio={`${project.imageWidth} / ${project.imageHeight}`}
+        >
+          {image}
+        </ImageViewer>
+      ) : <div className="screenshot-frame">{image}</div>}
+      <figcaption>{project.caption[locale]}</figcaption>
     </figure>
   );
 }

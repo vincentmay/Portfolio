@@ -606,19 +606,18 @@ h2 em {
 .case-facts { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; border-top: 1px solid var(--line); padding-top: 24px; margin-top: 32px; max-width: 820px; }
 .case-facts dt { font: 10px var(--mono); color: var(--muted); margin-bottom: 10px; }
 .case-facts dd { margin: 0; font-size: 13px; line-height: 1.7; }
-.image-open { position: absolute; right: 20px; bottom: 16px; display: flex; align-items: center; gap: 8px; border: 1px solid #ffffff45; color: #efeee9; background: #24212cef; padding: 10px 13px; font: 11px var(--sans); cursor: pointer; }
-.image-open:hover { background: var(--accent-ink); }
+.image-zoom { display: block; padding: 0; background: transparent; cursor: zoom-in; line-height: 0; flex-shrink: 0; }
+.image-zoom:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
 .image-dialog { width: min(1500px, calc(100vw - 48px)); max-height: calc(100svh - 48px); border: 1px solid #ffffff25; padding: 60px 24px 20px; background: #19181e; color: #efeee9; overflow: auto; }
 .image-dialog::backdrop { background: #0b0a11e8; backdrop-filter: blur(10px); }
 .image-dialog img { width: 100%; max-height: calc(100svh - 180px); object-fit: contain; display: block; }
 .image-dialog p { text-align: center; color: #c2ccdc; font: 11px var(--mono); margin-top: 18px; }
 .image-close { position: absolute; top: 12px; right: 16px; display: flex; align-items: center; gap: 15px; border: 0; background: transparent; color: inherit; padding: 8px 12px; cursor: pointer; font: 12px var(--sans); }
 .image-close span { font-size: 24px; line-height: 1; }
-@media (max-width: 540px) { .image-open { font-size: 10px; bottom: 10px; right: 10px; } .image-dialog { width: calc(100vw - 20px); padding: 56px 10px 16px; } }
+@media (max-width: 540px) { .image-dialog { width: calc(100vw - 20px); padding: 56px 10px 16px; } }
 @media (max-width: 540px) { .case-facts { grid-template-columns: 1fr; gap: 20px; } }
 .case-image .project-visual { flex-direction: column; }
 .case-image .project-visual figcaption { position: static; width: 100%; font-size: 11px; line-height: 1.6; margin-top: 20px; white-space: normal; }
-.case-image .image-open { position: static; margin: 16px 0 0 auto; }
 .case-builds { margin-bottom: clamp(64px, 10vw, 140px); }
 .case-builds-heading { max-width: 720px; margin-bottom: 36px; }
 .case-builds-heading h2 { margin: 0 0 16px; font-size: clamp(28px, 4vw, 48px); font-weight: 450; letter-spacing: -.04em; }
