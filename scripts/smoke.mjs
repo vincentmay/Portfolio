@@ -55,6 +55,12 @@ for (const path of paths) {
       `${path}: image ${match[1]}`,
     );
   }
+  for (const match of html.matchAll(/<img[^>]+srcset="([^"]+)"/gi)) {
+    for (const candidate of match[1].split(",")) {
+      const src = candidate.trim().split(/\s+/)[0];
+      assert.ok((await stat(`dist${src}`)).isFile(), `${path}: responsive image ${src}`);
+    }
+  }
   console.log(`PASS ${path}`);
 }
 const demo = await readFile("dist/demos/gfos-code/index.html", "utf8");

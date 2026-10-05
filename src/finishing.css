@@ -163,6 +163,9 @@
 /* A dark exhibition stage unifies the application captures and lit builds.
    The same scroll position produces the same panel pose in either direction. */
 .journey-nav { display: none; }
+.project-art .project-visual.visual-gfos-code,
+.project-art .project-visual.visual-city-signal { padding-bottom: clamp(16px, 3vw, 42px); }
+.project-art .project-visual.visual-blockwright { padding-bottom: 0; }
 @media (min-width: 1100px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
   .work-section:has(.work-journey[data-enabled="true"]) { padding-bottom: 0; }
   .work-journey[data-enabled="true"] { width: var(--page-width); margin-left: calc((100% - var(--page-width)) / 2); height: calc(100svh - 100px + var(--journey-distance)); color: #efeee9; background: #141416; }
@@ -182,10 +185,10 @@
   .work-journey[data-enabled="true"] .work-copy h3 { font-size: clamp(36px, 3.8vw, 56px); }
   .work-journey[data-enabled="true"] .project-summary { font-size: 16px; line-height: 1.75; }
   .work-journey[data-enabled="true"] .project-stack { flex-wrap: wrap; gap: 8px 14px; }
-  .work-journey[data-enabled="true"] .project-art .project-visual { height: min(710px, calc(100svh - 235px)); padding: 24px 24px 54px; min-height: 0; background-color: #17171c; border: 1px solid #ffffff0d; }
+  .work-journey[data-enabled="true"] .project-art .project-visual { height: min(710px, calc(100svh - 235px)); padding: 24px; min-height: 0; background-color: #17171c; border: 1px solid #ffffff0d; }
   .work-journey[data-enabled="true"] .project-art .visual-gfos-code .screenshot-frame,
   .work-journey[data-enabled="true"] .project-art .visual-city-signal .screenshot-frame { width: min(100%, calc((100svh - 330px) * 16 / 9)); }
-  .work-journey[data-enabled="true"] .project-art .project-visual.visual-blockwright { padding: 0 0 54px; background: #07060b; }
+  .work-journey[data-enabled="true"] .project-art .project-visual.visual-blockwright { padding: 0; background: #07060b; }
   .work-journey[data-enabled="true"] .project-visual figcaption { font-size: 10px; line-height: 1.5; }
   .work-journey[data-enabled="true"] .stage-outline { display: none; }
   .work-journey[data-enabled="true"] .journey-nav { display: grid; grid-template-columns: repeat(3, 1fr); position: absolute; bottom: 18px; left: var(--scene-inset); width: min(620px, calc(100% - var(--scene-inset) * 2)); gap: 30px; }

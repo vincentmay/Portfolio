@@ -115,6 +115,7 @@ export function Home({ locale }: { locale: Locale }) {
                         <ProjectVisual
                           project={project}
                           locale={locale}
+                          eager
                           sizes="(min-width: 1512px) and (min-height: 760px) 1030px, (min-width: 1100px) and (min-height: 760px) calc(96vw - 396px), (min-width: 1512px) 1400px, calc(100vw - 48px)"
                         />
                         <span className="art-open">
@@ -182,9 +183,6 @@ export function Home({ locale }: { locale: Locale }) {
                   decoding="async"
                 />
               </div>
-              <figcaption>
-                Vincent May<span>{t.place}</span>
-              </figcaption>
             </figure>
             <div className="about-text" data-reveal>
               <p className="eyebrow section-index">

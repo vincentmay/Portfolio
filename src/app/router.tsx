@@ -12,6 +12,7 @@ import { Legal } from "../routes/Legal.tsx";
 import { Project } from "../routes/Project.tsx";
 import { Header, Footer } from "../components/Portfolio";
 import { useDocument } from "./page";
+import { SmoothScroll } from "./SmoothScroll";
 
 function NotFound() {
   useDocument(
@@ -35,7 +36,7 @@ function NotFound() {
   );
 }
 const root = createRootRoute({
-  component: () => <Outlet />,
+  component: () => <><SmoothScroll /><Outlet /></>,
   notFoundComponent: NotFound,
 });
 

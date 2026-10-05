@@ -5,6 +5,36 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## Preview loading, captions, and whole-page easing — 5 October 2026
+
+- Homepage previews previously remained unloaded outside the transformed
+  horizontal gallery after returning from a case. All three small responsive
+  previews now load eagerly, request synchronous decoding, and reserve their
+  image proportions. Case-study galleries retain lazy loading. All nine public
+  homepage image candidates return HTTP 200 with image/webp content; the smoke
+  check now verifies every responsive image candidate exists in the release.
+- Returns from GFOS Code, Blockwright, and POVLINE at 1440×900 show all three
+  previews complete with nonzero natural dimensions. At 390×844 all three 960px
+  candidates also complete, with no horizontal overflow. Removed the repeated
+  homepage preview and portrait captions and their reserved space. Case-study
+  captions retain build names, source context, and sample-data disclosures;
+  descriptive alt text remains intact.
+- Lenis now eases wheel input throughout the document over 280ms, with native
+  touch/keyboard behaviour and no scroll-speed multiplier. Input and navigation
+  interrupt wheel inertia. Reduced motion destroys the controller; modal and
+  nested scrolling stay native. Effect cleanup removes the controller and all
+  listeners on route changes and React StrictMode remounts.
+- Instrumented wheel input moves down 180px and back up 180px monotonically
+  without overshoot. Keyboard interruption at 82px produces no later scroll
+  writes. Because the collaborative preview throttles background animation
+  frames, these timing checks used a temporary 16ms timer-driven frame scheduler
+  in the test page; the shipped controller uses native requestAnimationFrame.
+  Reduced-motion returns create no Lenis controller and do not prevent wheel
+  input. Image enlargement lets the dialog scroll natively; Escape restores
+  focus and unlocks the page. Native CSS anchor animation is also throttled in
+  both the existing public version and the local preview.
+- `npm run check`, `npm run check:release`, and `git diff --check` pass.
+
 ## Gentle navigation scrolling — 5 October 2026
 
 - Section links and gallery controls retain native smooth scrolling. Returning

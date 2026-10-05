@@ -182,11 +182,13 @@ export function ProjectVisual({
   project,
   locale,
   large = false,
+  eager = false,
   sizes = "(max-width: 1512px) 100vw, 1400px",
 }: {
   project: ProjectImage & { id: string };
   locale: Locale;
   large?: boolean;
+  eager?: boolean;
   sizes?: string;
 }) {
   const image = (
@@ -197,8 +199,8 @@ export function ProjectVisual({
       alt={project.alt[locale]}
       width={project.imageWidth}
       height={project.imageHeight}
-      loading="lazy"
-      decoding="async"
+      loading={eager ? "eager" : "lazy"}
+      decoding={eager ? "sync" : "async"}
     />
   );
   return (
@@ -227,8 +229,12 @@ export function ProjectVisual({
         >
           {image}
         </ImageViewer>
-      ) : <div className="screenshot-frame">{image}</div>}
-      <figcaption>{project.caption[locale]}</figcaption>
+      ) : (
+        <div className="screenshot-frame" style={{ aspectRatio: `${project.imageWidth} / ${project.imageHeight}` }}>
+          {image}
+        </div>
+      )}
+      {large && <figcaption>{project.caption[locale]}</figcaption>}
     </figure>
   );
 }
