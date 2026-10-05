@@ -5,6 +5,19 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## Motion polish — 6 October 2026
+
+- Removed the legacy 1.25s masked name slide beneath the shared 550ms, 8px
+  hero entrance. The heading now has one animation and remains readable.
+- Skeleton sheen now moves a translucent gradient with `transform` rather
+  than animating `background-position`. It still stops after three cycles;
+  reduced motion uses a static surface. Cached images still skip loading.
+- Collaborative browser checks at 1440×900 and 390×844 confirm the heading's
+  children have no animation, previews are ready, no horizontal overflow, and
+  switching the loading presentation changes frame dimensions by 0px on mobile.
+  Inspected the compiled reduced-motion rules for the new pseudo-element.
+- `npm run check`, `npm run check:release`, and `git diff --check` pass.
+
 ## Quiet image loading and entrances — 6 October 2026
 
 - Project previews, case screenshots, and enlarged images now use an actual
