@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { MediaImage } from "./MediaImage";
 
-export function ImageViewer({ src, alt, caption, aspectRatio, children }: {
+export function ImageViewer({ src, alt, caption, aspectRatio, width, height, children }: {
   src: string;
   alt: string;
   caption: string;
   aspectRatio: string;
+  width: number;
+  height: number;
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -47,7 +50,7 @@ export function ImageViewer({ src, alt, caption, aspectRatio, children }: {
         <button className="image-close" type="button" onClick={() => dialog.current?.close()}>
           {"Close"} <span aria-hidden="true">×</span>
         </button>
-        <img src={src} alt={alt} />
+        <MediaImage src={src} alt={alt} width={width} height={height} eager />
         <p>{caption}</p>
       </dialog>
     )}

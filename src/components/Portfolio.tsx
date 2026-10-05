@@ -4,6 +4,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import type { Locale } from "../content";
 import { words, type ProjectImage } from "../portfolio";
 import { ImageViewer } from "./ImageViewer";
+import { MediaImage } from "./MediaImage";
 
 export function Arrow({
   direction = "up",
@@ -192,15 +193,15 @@ export function ProjectVisual({
   sizes?: string;
 }) {
   const image = (
-    <img
+    <MediaImage
+      key={project.image}
       src={project.image}
       srcSet={project.imageSrcSet}
       sizes={project.imageSrcSet ? sizes : undefined}
       alt={project.alt[locale]}
       width={project.imageWidth}
       height={project.imageHeight}
-      loading={eager ? "eager" : "lazy"}
-      decoding={eager ? "sync" : "async"}
+      eager={eager}
     />
   );
   return (
@@ -226,6 +227,8 @@ export function ProjectVisual({
           alt={project.alt[locale]}
           caption={project.caption[locale]}
           aspectRatio={`${project.imageWidth} / ${project.imageHeight}`}
+          width={project.imageWidth}
+          height={project.imageHeight}
         >
           {image}
         </ImageViewer>

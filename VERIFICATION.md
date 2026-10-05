@@ -5,6 +5,29 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## Quiet image loading and entrances — 6 October 2026
+
+- Project previews, case screenshots, and enlarged images now use an actual
+  loading state. A soft ice-blue surface fills the reserved frame until the image
+  is downloaded and decoded, then fades out as the image rises 8px over 350ms.
+  Already complete images skip loading before paint; no minimum wait is added.
+  Failed requests show “Image unavailable” rather than an endless skeleton.
+  Alt text is retained, loading surfaces are hidden from assistive technology,
+  and the container reports its real busy state. Server-rendered images remain
+  visible when JavaScript is disabled.
+- Hero text and case headings use a 550ms, 8px entrance that starts at 72% opacity.
+  Text is readable immediately. The existing measured scroll reveals remain;
+  reduced motion disables the new entrances, image movement, and skeleton sheen.
+  Sheen stops after three cycles rather than animating indefinitely.
+- The shared browser disconnected and the agent-browser Windows executable
+  failed to launch. Used the existing local Playwright/Chrome installation for
+  11 focused checks with no runtime page errors: gated real downloads, stable
+  frame bounds (under 1px difference), all three case returns at 1440×900 and
+  390×844, gated full-size modal loading, Escape/focus/scroll cleanup, aborted
+  image requests, real reduced-motion emulation, and a JavaScript-disabled page.
+  Desktop loading/ready and mobile ready/modal screenshots were visually reviewed.
+- `npm run check`, `npm run check:release`, and `git diff --check` pass.
+
 ## Preview loading, captions, and whole-page easing — 5 October 2026
 
 - Homepage previews previously remained unloaded outside the transformed
