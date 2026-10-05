@@ -9,16 +9,31 @@ export function SmoothScroll() {
   useEffect(() => {
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
     let lenis: Lenis | undefined;
+    let frame = 0;
+    const tick = (time: number) => {
+      frame = 0;
+      lenis?.raf(time);
+      if (lenis?.isScrolling === "smooth") frame = requestAnimationFrame(tick);
+    };
+    const wake = () => {
+      if (!frame && lenis) {
+        // Reset the animation clock after idle time before a new wheel gesture.
+        lenis.raf(performance.now());
+        frame = requestAnimationFrame(tick);
+      }
+    };
     const interrupt = () => {
       if (lenis?.isScrolling === "smooth")
         lenis.scrollTo(lenis.actualScroll, { immediate: true });
     };
     const start = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
       lenis?.destroy();
       lenis = undefined;
       if (preference.matches) return;
       lenis = new Lenis({
-        autoRaf: true,
+        autoRaf: false,
         duration: 0.28,
         lerp: 0,
         easing: (t) => 1 - (1 - t) ** 3,
@@ -31,6 +46,7 @@ export function SmoothScroll() {
           !event.shiftKey && Math.abs(deltaY) >= Math.abs(deltaX) &&
           !document.querySelector("dialog[open]"),
       });
+      lenis.on("virtual-scroll", wake);
     };
     start();
     preference.addEventListener("change", start);
@@ -39,6 +55,7 @@ export function SmoothScroll() {
     // Stop wheel inertia before section links or gallery controls start scrolling.
     document.addEventListener("click", interrupt, true);
     return () => {
+      cancelAnimationFrame(frame);
       lenis?.destroy();
       preference.removeEventListener("change", start);
       window.removeEventListener("keydown", interrupt);

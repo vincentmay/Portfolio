@@ -1,8 +1,8 @@
 import { useId } from "react";
-import { ACTIVE_MARK } from "./designs.ts";
-import { VIEW, renderDesign, type Design, type Layer } from "./geometry.ts";
 import { pendantMark } from "./pendant-mark";
 
+const VIEW = 100;
+type Layer = { d: string; fill?: boolean; evenOdd?: boolean; width?: number };
 const draw = (layer: Layer, i: number) =>
   layer.fill ? (
     <path key={i} d={layer.d} fill="currentColor" fillRule={layer.evenOdd ? "evenodd" : undefined} />
@@ -26,16 +26,12 @@ const draw = (layer: Layer, i: number) =>
 export function Mark({
   className,
   label,
-  design = ACTIVE_MARK,
-  weight = 1,
 }: {
   className?: string;
   label?: string;
-  design?: Design;
-  weight?: number;
 }) {
-  const maskId = `mark-${design.id}-${useId()}`;
-  const { back, body, front, gapWidth, frontPath } = design === ACTIVE_MARK ? pendantMark : renderDesign(design, weight);
+  const maskId = `mark-stellar-${useId()}`;
+  const { back, body, front, gapWidth, frontPath } = pendantMark;
 
   return (
     <svg

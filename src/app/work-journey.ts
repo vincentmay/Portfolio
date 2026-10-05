@@ -10,10 +10,12 @@ export function createWorkJourney(root: HTMLElement) {
     ...journey.querySelectorAll<HTMLButtonElement>("[data-journey-index]"),
   ];
   let state: { start: number; distance: number; stride: number } | undefined;
+  let lastTravel = -1;
   let cancelSettle = () => {};
   const resetRows = () =>
     rows.forEach((row) => row.style.removeProperty("--scene-focus"));
   const measure = () => {
+    lastTravel = -1;
     const enabled = matchMedia(
       "(min-width: 1100px) and (min-height: 760px)",
     ).matches;
@@ -45,6 +47,8 @@ export function createWorkJourney(root: HTMLElement) {
   const draw = (scroll: number) => {
     if (!state) return;
     const travel = Math.max(0, Math.min(state.distance, scroll - state.start));
+    if (travel === lastTravel) return;
+    lastTravel = travel;
     const position = travel / state.stride;
     track.style.transform = `translate3d(${-travel}px,0,0)`;
     rows.forEach((row, i) => {

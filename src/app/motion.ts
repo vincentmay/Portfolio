@@ -51,7 +51,10 @@ export function usePortfolioMotion(key: string, workProjectId?: string, smoothWo
           needsMeasure = false;
         }
         journey?.draw(scroll);
-        if (star) star.dataset.scrollPose = String(clamp(scroll / height));
+        if (star) {
+          const pose = String(clamp(scroll / height));
+          if (star.dataset.scrollPose !== pose) star.dataset.scrollPose = pose;
+        }
         const max = document.documentElement.scrollHeight - height;
         element.style.setProperty(
           "--page-progress",

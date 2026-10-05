@@ -10,11 +10,13 @@ export function StellarObject() {
     let dispose: (() => void) | undefined;
     let idle: number | undefined;
     let timer: number | undefined;
+    let visible = false;
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     const start = async (current: number) => {
       try {
         const { createStellar } = await import("./stellar-webgl");
-        if (!cancelled && current === generation)
-          dispose = createStellar(element, preference.matches);
+        if (!cancelled && current === generation && visible && !document.hidden)
+          dispose = createStellar(element);
       } catch {
         // The matching poster remains visible if WebGL cannot be initialized.
       }
@@ -23,23 +25,33 @@ export function StellarObject() {
       const current = ++generation;
       if (idle !== undefined) window.cancelIdleCallback(idle);
       window.clearTimeout(timer);
-      dispose?.();
-      dispose = undefined;
-      if (preference.matches) return;
+      if (preference.matches || connection?.saveData) {
+        dispose?.();
+        dispose = undefined;
+        return;
+      }
+      if (dispose || !visible || document.hidden) return;
       // The matching poster is visible immediately; GPU work waits for paint.
       if (typeof window.requestIdleCallback === "function")
         idle = window.requestIdleCallback(() => void start(current), { timeout: 700 });
       else timer = window.setTimeout(() => void start(current), 120);
     };
     preference.addEventListener("change", change);
-    change();
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      change();
+    });
+    observer.observe(element);
+    document.addEventListener("visibilitychange", change);
     return () => {
       cancelled = true;
       generation++;
       if (idle !== undefined) window.cancelIdleCallback(idle);
       window.clearTimeout(timer);
       dispose?.();
+      observer.disconnect();
       preference.removeEventListener("change", change);
+      document.removeEventListener("visibilitychange", change);
     };
   }, []);
   return (

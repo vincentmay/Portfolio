@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { createPendant } from "./pendant-model";
 
 /** The pendant as real beveled geometry with a ring crossing its front and back. */
-export function createStellar(host: HTMLElement, reduced: boolean) {
+export function createStellar(host: HTMLElement) {
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: true,
@@ -67,7 +67,7 @@ export function createStellar(host: HTMLElement, reduced: boolean) {
     yaw = 0,
     pitch = 0;
   const resize = () => {
-    // CSS docking scales the canvas; its drawing buffer keeps its layout size.
+    // Keep the drawing buffer at the element's actual layout size.
     const width = host.clientWidth,
       height = host.clientHeight;
     if (!width || !height || lost) return;
@@ -78,15 +78,17 @@ export function createStellar(host: HTMLElement, reduced: boolean) {
       2.55 / (Math.tan((35 * Math.PI) / 360) * camera.aspect),
     );
     camera.updateProjectionMatrix();
-    if (reduced) renderer.render(scene, camera);
+    resume();
   };
   const move = (event: PointerEvent) => {
     const box = host.getBoundingClientRect();
     pointerX = (event.clientX - box.left) / box.width - 0.5;
     pointerY = (event.clientY - box.top) / box.height - 0.5;
+    resume();
   };
   const leave = () => {
     pointerX = pointerY = 0;
+    resume();
   };
   const draw = () => {
     frame = 0;
@@ -94,8 +96,12 @@ export function createStellar(host: HTMLElement, reduced: boolean) {
     const scroll = Number(host.dataset.scrollPose ?? 0);
     // A small scroll-driven turn changes the reflections without flattening the
     // pendant or moving it out of the hero. Pointer response remains independent.
-    yaw += (pointerX * 0.55 - yaw) * 0.08;
-    pitch += (pointerY * 0.3 - pitch) * 0.08;
+    const targetYaw = pointerX * 0.55;
+    const targetPitch = pointerY * 0.3;
+    yaw += (targetYaw - yaw) * 0.08;
+    pitch += (targetPitch - pitch) * 0.08;
+    const moving = Math.abs(targetYaw - yaw) + Math.abs(targetPitch - pitch) > 0.0001;
+    if (!moving) { yaw = targetYaw; pitch = targetPitch; }
     model.rotation.set(
       0.12 + scroll * 0.08 + pitch,
       -0.18 + scroll * 0.18 + yaw,
@@ -103,10 +109,11 @@ export function createStellar(host: HTMLElement, reduced: boolean) {
     );
     model.position.y = 0;
     renderer.render(scene, camera);
-    frame = requestAnimationFrame(draw);
+    // Reflections are static at rest. Stop spending GPU time once damping settles.
+    if (moving) frame = requestAnimationFrame(draw);
   };
   const resume = () => {
-    if (!reduced && !lost && visible && !document.hidden && !frame)
+    if (!disposed && !lost && visible && !document.hidden && !frame)
       frame = requestAnimationFrame(draw);
   };
   const contextLost = (event: Event) => {
@@ -144,12 +151,12 @@ export function createStellar(host: HTMLElement, reduced: boolean) {
   observer.observe(host);
   const sizeObserver = new ResizeObserver(resize);
   sizeObserver.observe(host);
+  // The portfolio writes its measured scroll pose before requesting a draw.
+  const poseObserver = new MutationObserver(resume);
+  poseObserver.observe(host, { attributes: true, attributeFilter: ["data-scroll-pose"] });
   document.addEventListener("visibilitychange", resume);
-  window.addEventListener("scroll", resume, { passive: true });
-  if (!reduced) {
-    host.addEventListener("pointermove", move);
-    host.addEventListener("pointerleave", leave);
-  }
+  host.addEventListener("pointermove", move, { passive: true });
+  host.addEventListener("pointerleave", leave);
   model.rotation.set(0.12, -0.18, -0.16);
   resize();
   renderer.render(scene, camera);
@@ -160,8 +167,8 @@ export function createStellar(host: HTMLElement, reduced: boolean) {
     cancelAnimationFrame(frame);
     observer.disconnect();
     sizeObserver.disconnect();
+    poseObserver.disconnect();
     document.removeEventListener("visibilitychange", resume);
-    window.removeEventListener("scroll", resume);
     host.removeEventListener("pointermove", move);
     host.removeEventListener("pointerleave", leave);
     renderer.domElement.removeEventListener("webglcontextlost", contextLost);

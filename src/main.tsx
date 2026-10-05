@@ -2,9 +2,7 @@ import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./app/router.tsx";
-import "./portfolio.css";
-import "./editorial.css";
-import "./finishing.css";
+import "./styles.css";
 
 const root = document.getElementById("root")!;
 const path = window.location.pathname.replace(/\/+$/, "") || "/";

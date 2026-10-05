@@ -85,7 +85,8 @@ export function Header({
         const box = section.getBoundingClientRect();
         return box.top <= (gallery ? 101 : midpoint) && box.bottom > midpoint;
       });
-      element.dataset.theme = onDark ? "dark" : "light";
+      const theme = onDark ? "dark" : "light";
+      if (element.dataset.theme !== theme) element.dataset.theme = theme;
       const active = chapters.find((section) => {
         const box = section.getBoundingClientRect();
         const point = window.innerHeight * 0.35;
@@ -93,6 +94,7 @@ export function Header({
       });
       for (const link of links) {
         const selected = link.dataset.section === active?.id;
+        if (link.dataset.active === String(selected)) continue;
         link.dataset.active = String(selected);
         if (selected) link.setAttribute("aria-current", "location");
         else link.removeAttribute("aria-current");

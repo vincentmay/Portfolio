@@ -4,7 +4,6 @@ import {
   createRoute,
   createRouter,
   useParams,
-  lazyRouteComponent,
   Link,
 } from "@tanstack/react-router";
 import { Home } from "../routes/Home.tsx";
@@ -35,8 +34,12 @@ function NotFound() {
     </div>
   );
 }
+function Root() {
+  return <><SmoothScroll /><Outlet /></>;
+}
+
 const root = createRootRoute({
-  component: () => <><SmoothScroll /><Outlet /></>,
+  component: Root,
   notFoundComponent: NotFound,
 });
 
@@ -68,66 +71,7 @@ const routeTree = root.addChildren([
     path: "/privacy",
     component: () => <Legal page="privacy" locale="en" />,
   }),
-  ...(import.meta.env.DEV ? experimentRoutes() : []),
 ]);
-
-// Keep design experiments locally, outside the published route tree.
-function experimentRoutes() {
-const LogoLab = lazyRouteComponent(
-  () => import("../routes/LogoLab"),
-  "LogoLab",
-);
-const Designs = lazyRouteComponent(
-  () => import("../routes/Designs"),
-  "Designs",
-);
-const Studio = lazyRouteComponent(() => import("../designs/Studio"), "Studio");
-const Terminal = lazyRouteComponent(
-  () => import("../designs/Terminal"),
-  "Terminal",
-);
-const Chrome = lazyRouteComponent(() => import("../designs/Chrome"), "Chrome");
-const Kinetic = lazyRouteComponent(
-  () => import("../designs/Kinetic"),
-  "Kinetic",
-);
-
-  return [
-  // Temporary: remove once the mark is chosen.
-  createRoute({
-    getParentRoute: () => root,
-    path: "/logo-lab",
-    component: LogoLab,
-  }),
-
-  // The design gallery. Whichever direction wins becomes the site; the rest go.
-  createRoute({
-    getParentRoute: () => root,
-    path: "/designs",
-    component: Designs,
-  }),
-  createRoute({
-    getParentRoute: () => root,
-    path: "/d/studio",
-    component: () => <Studio locale="en" />,
-  }),
-  createRoute({
-    getParentRoute: () => root,
-    path: "/d/terminal",
-    component: () => <Terminal locale="en" />,
-  }),
-  createRoute({
-    getParentRoute: () => root,
-    path: "/d/chrome",
-    component: () => <Chrome locale="en" />,
-  }),
-  createRoute({
-    getParentRoute: () => root,
-    path: "/d/kinetic",
-    component: () => <Kinetic locale="en" />,
-  }),
-  ];
-}
 
 export const router = createRouter({
   routeTree,

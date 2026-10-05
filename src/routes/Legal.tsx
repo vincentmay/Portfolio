@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Header, Footer } from "../components/Portfolio";
-import { copy, type Locale } from "../content.ts";
+import type { Locale } from "../content.ts";
+import { words } from "../portfolio";
 import { useDocument } from "../app/page.ts";
 
 type Section = { heading: string; body: readonly string[] };
@@ -83,7 +84,7 @@ export function Legal({
   page: "imprint" | "privacy";
   locale: Locale;
 }) {
-  const t = copy[locale];
+  const t = words[locale];
   const doc = TEXT[locale][page];
   useDocument(locale, `${doc.title} — Vincent May`, legalDescription[locale][page], true);
 
@@ -96,7 +97,7 @@ export function Legal({
 
       <main id="main" className="legal wrap" tabIndex={-1}>
         <Link className="text-link" to={`/${locale}`}>
-          ← {t.footer.back}
+          ← Back to home
         </Link>
         <h1>{doc.title}</h1>
         {doc.sections.map((section) => (
