@@ -13,10 +13,18 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
   linked image/style/script assets checked on the public site return HTTP 200.
 - The live Chromium browser exposed a dashboard-managed Cloudflare Analytics
   beacon, which was absent in the local app and non-browser HTTP response.
-  Added Pages response headers: `no-transform` prevents automatic injection
-  according to Cloudflare's documentation; script and connection sources are
-  restricted to this origin, preventing execution of an injected external beacon.
+  Added Pages response headers: `no-transform` requests unchanged proxy responses;
+  script and connection sources are restricted to this origin, preventing
+  execution of an injected external beacon. Pages still adds a managed script
+  tag at deployment time. After deploy `2482525`, a fresh public browser load
+  records the attempted script as blocked (zero transfer/body bytes, status 0)
+  and no analytics POST. The star's canvas, loaded images, and hydrated pages work.
   Local fonts, images, dynamic imports, and the WebGL star remain same-origin.
+- Both build and release checks pass. Local Cloudflare emulation delivers the
+  expected CSP/cache headers; actual navigation to the GFOS Code study,
+  1920px image opening, Escape/focus restoration, and return via Work pass with
+  the policy active. The public domain delivers the same headers. GitHub's
+  additional verification job remains queued; Cloudflare deployment checks succeed.
 - Reference: https://developers.cloudflare.com/web-analytics/get-started/
 - Reference: https://developers.cloudflare.com/pages/configuration/headers/
 
