@@ -349,14 +349,14 @@ export const work: CaseStudy[] = [
       "Node.js",
       "Leaflet"
     ],
-    "image": "/projects/povline-viewer.webp",
-    "imageWidth": 1920,
+    "image": "/projects/povline-main.webp",
+    "imageWidth": 1672,
     "imageHeight": 1080,
     "alt": {
-      "en": "POVLINE’s actual four-pane Brick Bois workspace with live Twitch channel previews from anthonyz, buddha, omie, and xqc."
+      "en": "POVLINE’s Brick Bois viewer with anthonyz as the main perspective and live-channel previews from buddha, omie, and xqc stacked alongside."
     },
     "caption": {
-      "en": "Brick Bois · four perspectives · source-provided live previews"
+      "en": "Brick Bois · one main perspective · three supporting live previews"
     },
     "intro": {
       "en": "A roleplay story unfolds across people, channels, and places. Following it through separate stream tabs loses the connections. POVLINE is an independent NoPixel viewing companion that joins those pieces: discover creators and crews, assemble the perspectives you care about, explore reported city events, and return to moments through broadcast history. I built the product experience and the data infrastructure together."
@@ -396,8 +396,26 @@ export const work: CaseStudy[] = [
         }
       }
     ],
-    "imageSrcSet": "/projects/povline-viewer-960.webp 960w, /projects/povline-viewer-1440.webp 1440w, /projects/povline-viewer.webp 1920w",
+    "imageSrcSet": "/projects/povline-main-960.webp 960w, /projects/povline-main-1440.webp 1440w, /projects/povline-main.webp 1672w",
     "features": [
+      {
+        "image": "/projects/povline-viewer.webp",
+        "imageSrcSet": "/projects/povline-viewer-960.webp 960w, /projects/povline-viewer-1440.webp 1440w, /projects/povline-viewer.webp 1920w",
+        "imageWidth": 1920,
+        "imageHeight": 1080,
+        "alt": {
+          "en": "POVLINE’s equal-tile layout with four Brick Bois Twitch channel previews from anthonyz, buddha, omie, and xqc."
+        },
+        "caption": {
+          "en": "Brick Bois · equal tiles · source-provided live previews"
+        },
+        "title": {
+          "en": "Choose what gets your attention."
+        },
+        "body": {
+          "en": "Give one perspective the main stage, or keep all four equally visible. Switch between layout presets, move or swap panes, and resize the splits to follow the story your way. Each channel keeps its own playback and audio controls."
+        }
+      },
       {
         "image": "/projects/povline-crews.webp",
         "imageSrcSet": "/projects/povline-crews-960.webp 960w, /projects/povline-crews-1440.webp 1440w, /projects/povline-crews.webp 1920w",

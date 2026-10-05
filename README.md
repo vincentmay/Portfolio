@@ -139,9 +139,11 @@ the Open Graph card using the raster star; it requires Python and Pillow.
   The source checkout and Minecraft worlds are untouched; geometry is not shipped.
   The owner confirmed the repository is private; its case study uses the local
   source as evidence and does not offer an inaccessible public source link.
-- **POVLINE / NoPixel Viewer:** four 1920×1080 captures from the running
-  application using public community feeds: the four-pane Brick Bois viewer,
-  their five-creator roster, an incident map, and broadcast-overlap history.
+- **POVLINE / NoPixel Viewer:** five captures from the running application using
+  public community feeds: the Brick Bois viewer in main-perspective and equal-tile
+  layouts, their five-creator roster, an incident map, and broadcast-overlap history.
+  The main-perspective capture is 1672×1080, from a 1920×1240 viewport that gives
+  all supporting Twitch panes sufficient space. The other captures are 1920×1080.
   The viewer and roster were refreshed while four Brick Bois channels were live
   on 5 October 2026. Source-provided
   previews are genuine; the selected viewer's players remain paused. Broadcast

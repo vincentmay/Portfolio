@@ -5,6 +5,20 @@ Deployment status is reported by the connected GitHub/Cloudflare checks.
 
 ## Completed
 
+## POVLINE layout showcase — 5 October 2026
+
+- Captured the real Brick Bois viewer after choosing “One main POV” in the app:
+  anthonyz is the main pane, with buddha, omie, and xqc stacked alongside.
+  The 1920×1240 capture viewport keeps all supporting Twitch video areas above
+  their minimum size. The browser recording exports a 1672×1080 image; its actual
+  dimensions and responsive 960px/1440px variants are used in the portfolio.
+- The main-perspective view now leads the project. The equal-tile view remains
+  as a separate feature explaining the layout controls. Both use real paused
+  source previews, with no invented playback or synchronized-event claims.
+- Reviewed the new lead image at 1440×900 and 390×844, with no horizontal overflow.
+  Keyboard enlargement loads the full-size image, and Escape closes it.
+  `npm run check`, `npm run check:release`, and `git diff --check` pass.
+
 ## Direct image enlargement — 5 October 2026
 
 - Removed the separate enlargement control and its layout row from project
