@@ -40,8 +40,10 @@ only during genuine loading; cached images skip them. Failed images have a
 quiet fallback. Image dialogs support Escape, focus return, and native scrolling.
 
 The hero uses a matching poster before loading Three.js. GPU initialization
-waits until the star is visible and the browser is idle. Reduced motion and
-data-saving mode retain the poster. The renderer draws only for interaction,
+waits until the star is visible and input has been quiet for 900 ms, then runs
+in an OffscreenCanvas worker so context creation cannot block page JavaScript.
+Reduced motion, data-saving mode, and unsupported browsers retain the poster.
+The renderer draws only for interaction,
 resize, or scroll, then stops when damping settles; it pauses offscreen and
 recovers after graphics-context loss. Wheel easing also stops its frame loop at
 rest; touch and keyboard scrolling remain native. Reduced motion disables both.

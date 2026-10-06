@@ -60,7 +60,7 @@ export function MediaImage({ src, srcSet, sizes, alt, width, height, eager = fal
         width={width}
         height={height}
         loading={eager ? "eager" : "lazy"}
-        decoding={eager ? "sync" : "async"}
+        decoding="async"
       />
       <span className="image-placeholder" aria-hidden="true" />
       {state === "error" && <span className="image-error" role="status">Image unavailable</span>}

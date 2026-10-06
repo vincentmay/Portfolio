@@ -30,6 +30,7 @@ export function usePortfolioMotion(key: string, workProjectId?: string, smoothWo
       const journey = createWorkJourney(element);
       if (journey) showProject = journey.showProject;
       const star = element.querySelector<HTMLElement>(".stellar-object");
+      const progress = element.querySelector<HTMLElement>(".reading-progress");
       const reveals = [
         ...element.querySelectorAll<HTMLElement>("[data-reveal]"),
       ];
@@ -37,6 +38,14 @@ export function usePortfolioMotion(key: string, workProjectId?: string, smoothWo
         ...element.querySelectorAll<HTMLElement>("[data-image-stage]"),
       ];
       let geometry: { el: HTMLElement; y: number }[] = [];
+      const values = new WeakMap<HTMLElement, Record<string, number>>();
+      const write = (el: HTMLElement, property: string, value: number) => {
+        let previous = values.get(el);
+        if (!previous) { previous = {}; values.set(el, previous); }
+        if (previous[property] === value) return;
+        previous[property] = value;
+        el.style.setProperty(property, String(value));
+      };
       let frame = 0,
         needsMeasure = true,
         active = true;
@@ -50,29 +59,21 @@ export function usePortfolioMotion(key: string, workProjectId?: string, smoothWo
           geometry = reveals.map((el) => ({ el, y: layoutTop(el, element) }));
           needsMeasure = false;
         }
+        // Read geometry before any animation styles invalidate layout.
+        const max = document.documentElement.scrollHeight - height;
+        const stagePositions = stages.map((stage) => stage.getBoundingClientRect().top);
         journey?.draw(scroll);
         if (star) {
           const pose = String(clamp(scroll / height));
           if (star.dataset.scrollPose !== pose) star.dataset.scrollPose = pose;
         }
-        const max = document.documentElement.scrollHeight - height;
-        element.style.setProperty(
-          "--page-progress",
-          String(max > 0 ? scroll / max : 0),
-        );
+        if (progress) write(progress, "--page-progress", max > 0 ? scroll / max : 0);
         for (const { el, y } of geometry) {
           // Small, scrubbed entrances: reversing scroll restores the exact same state.
-          el.style.setProperty(
-            "--reveal",
-            String(clamp((scroll + height * 0.9 - y) / (height * 0.3))),
-          );
+          write(el, "--reveal", clamp((scroll + height * 0.9 - y) / (height * 0.3)));
         }
-        for (const stage of stages) {
-          const box = stage.getBoundingClientRect();
-          stage.style.setProperty(
-            "--stage-enter",
-            String(clamp((height - box.top) / (height * 0.6))),
-          );
+        for (const [index, stage] of stages.entries()) {
+          write(stage, "--stage-enter", clamp((height - stagePositions[index]) / (height * 0.6)));
         }
       };
       const schedule = () => {
@@ -101,7 +102,7 @@ export function usePortfolioMotion(key: string, workProjectId?: string, smoothWo
         element.classList.remove("motion-ready");
         reveals.forEach((el) => el.style.removeProperty("--reveal"));
         stages.forEach((el) => el.style.removeProperty("--stage-enter"));
-        element.style.removeProperty("--page-progress");
+        progress?.style.removeProperty("--page-progress");
       };
     };
     start();

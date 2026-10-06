@@ -7,7 +7,8 @@ const assets = await readdir('dist/assets');
 for (const [label, pattern, limit] of [
   ['client JavaScript', /^index-.*\.js$/, 112 * 1024],
   ['styles', /^index-.*\.css$/, 11 * 1024],
-  ['deferred star', /^stellar-webgl-.*\.js$/, 140 * 1024],
+  ['star controller', /^stellar-webgl-.*\.js$/, 2 * 1024],
+  ['deferred star worker', /^stellar-worker-.*\.js$/, 140 * 1024],
 ]) {
   const files = assets.filter(name => pattern.test(name));
   assert.equal(files.length, 1, `Expected one ${label} bundle`);
