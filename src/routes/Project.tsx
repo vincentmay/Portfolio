@@ -95,7 +95,7 @@ export function Project({ locale, id }: { locale: Locale; id: string }) {
                 target="_blank"
                 rel="noreferrer"
               >
-                {t.demo}
+                {project.demoLabel?.[locale] ?? t.demo}
                 <Arrow />
               </a>
             )}
@@ -169,7 +169,7 @@ export function Project({ locale, id }: { locale: Locale; id: string }) {
                 target="_blank"
                 rel="noreferrer"
               >
-                {t.demo}
+                {project.demoLabel?.[locale] ?? t.demo}
                 <Arrow />
               </a>
             )}

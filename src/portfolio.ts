@@ -25,6 +25,7 @@ export type CaseStudy = ProjectImage & {
   features?: (ProjectImage & { title: Text; body: Text })[];
   source?: string;
   demo?: string;
+  demoLabel?: Text;
   intro: Text;
   sections: { title: Text; body: Text }[];
   flow: Record<Locale, string[]>;
@@ -327,6 +328,8 @@ export const work: CaseStudy[] = [
   {
     "id": "city-signal",
     "name": "POVLINE",
+    "demo": "https://povline.vincentmay.com/",
+    "demoLabel": { "en": "Try POVLINE" },
     "contribution": {
       "en": "Designed and built the discovery-to-viewer experience, interactive layouts, crew following, live-data backend, scene library, map, and broadcast history."
     },
