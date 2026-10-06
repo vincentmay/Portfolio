@@ -50,6 +50,8 @@ rest; touch and keyboard scrolling remain native. Reduced motion disables both.
 
 The horizontal project exhibition is enabled only on large, tall viewports.
 Small screens and reduced-motion mode use the ordinary vertical document.
+Desktop static galleries retain the image-and-description composition; motion
+adds horizontal travel rather than providing the underlying layout.
 Case-study returns preserve the selected project. Hashes and section links work
 with native navigation; readers can interrupt the short return animation.
 

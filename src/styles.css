@@ -2265,6 +2265,42 @@ h2 em {
 .project-art .project-visual.visual-gfos-code,
 .project-art .project-visual.visual-city-signal { padding-bottom: clamp(16px, 3vw, 42px); }
 .project-art .project-visual.visual-blockwright { padding-bottom: 0; }
+/* Desktop composition is complete before motion enhances it. The static
+   gallery keeps each image and its explanation together below the header. */
+@media (min-width: 1100px) {
+  .work-journey .selected-work { gap: 48px; }
+  .work-journey .work-row {
+    min-height: calc(100svh - 100px);
+    padding-block: 32px;
+    grid-template-columns: minmax(0, 1fr) clamp(270px, 22vw, 340px);
+    gap: clamp(32px, 4vw, 70px);
+    align-items: center;
+  }
+  .work-journey .work-row .project-art { grid-column: 1; grid-row: 1; }
+  .work-journey .work-row .work-copy {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .work-journey .work-copy h3 { font-size: clamp(36px, 3.8vw, 56px); }
+  .work-journey .project-summary { font-size: 16px; line-height: 1.75; }
+  .work-journey .project-stack { gap: 8px 14px; }
+  .work-journey .project-stack li { font-size: 10px; }
+  .work-journey .project-art .project-visual {
+    height: min(710px, max(340px, calc(100svh - 235px)));
+    min-height: 0;
+    padding: 24px;
+    border: 1px solid #ffffff0d;
+  }
+  .work-journey .project-art .visual-gfos-code .screenshot-frame,
+  .work-journey .project-art .visual-city-signal .screenshot-frame {
+    width: min(100%, calc(max(250px, 100svh - 330px) * 16 / 9));
+  }
+  .work-journey .project-art .project-visual.visual-blockwright { padding: 0; }
+  .work-journey .stage-outline { display: none; }
+}
 @media (min-width: 1100px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
   .work-section:has(.work-journey[data-enabled="true"]) { padding-bottom: 0; }
   .work-journey[data-enabled="true"] { width: var(--page-width); margin-left: calc((100% - var(--page-width)) / 2); height: calc(100svh - 100px + var(--journey-distance)); color: #efeee9; background: #141416; }
@@ -2274,22 +2310,16 @@ h2 em {
   .work-journey[data-enabled="true"] .work-viewport::before { content: ""; position: absolute; inset: -14px 0 0; z-index: -1; background: #141416; pointer-events: none; }
   .work-journey[data-enabled="true"] .work-clip { height: 100%; overflow: clip; }
   .work-journey[data-enabled="true"] .selected-work { position: relative; display: flex; gap: var(--scene-gap); width: max-content; height: 100%; padding-inline: var(--scene-inset); will-change: transform; }
-  .work-journey[data-enabled="true"] .work-row { flex: 0 0 auto; width: calc(var(--page-width) - var(--scene-inset) * 2); height: 100%; margin: 0; padding-block: 25px 90px; grid-template-columns: minmax(0, 1fr) clamp(270px, 22vw, 340px); gap: clamp(32px, 4vw, 70px); align-items: center; z-index: 1; }
-  .work-journey[data-enabled="true"] .work-row .project-art { grid-column: 1; grid-row: 1; transform: translateY(calc((1 - var(--scene-focus, 1)) * 22px)) scale(calc(.96 + var(--scene-focus, 1) * .04)); transform-origin: center; }
-  .work-journey[data-enabled="true"] .work-row .work-copy { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: 20px; opacity: calc(.6 + var(--scene-focus, 1) * .4); transform: translateY(calc((1 - var(--scene-focus, 1)) * 26px)); }
+  .work-journey[data-enabled="true"] .work-row { flex: 0 0 auto; width: calc(var(--page-width) - var(--scene-inset) * 2); height: 100%; margin: 0; padding-block: 25px 90px; z-index: 1; }
+  .work-journey[data-enabled="true"] .work-row .project-art { transform: translateY(calc((1 - var(--scene-focus, 1)) * 22px)) scale(calc(.96 + var(--scene-focus, 1) * .04)); transform-origin: center; }
+  .work-journey[data-enabled="true"] .work-row .work-copy { opacity: calc(.6 + var(--scene-focus, 1) * .4); transform: translateY(calc((1 - var(--scene-focus, 1)) * 26px)); }
   .work-journey[data-enabled="true"] .work-copy .project-kicker { color: #b0bbd0; }
   .work-journey[data-enabled="true"] .project-focus, .work-journey[data-enabled="true"] .project-stack { color: #b0bbd0; }
-  .work-journey[data-enabled="true"] .project-stack li { color: #b0bbd0; font-size: 10px; }
+  .work-journey[data-enabled="true"] .project-stack li { color: #b0bbd0; }
   .work-journey[data-enabled="true"] .project-read { color: #efeee9; border-color: #7786a3; }
-  .work-journey[data-enabled="true"] .work-copy h3 { font-size: clamp(36px, 3.8vw, 56px); }
-  .work-journey[data-enabled="true"] .project-summary { font-size: 16px; line-height: 1.75; }
-  .work-journey[data-enabled="true"] .project-stack { flex-wrap: wrap; gap: 8px 14px; }
-  .work-journey[data-enabled="true"] .project-art .project-visual { height: min(710px, calc(100svh - 235px)); padding: 24px; min-height: 0; background-color: #17171c; border: 1px solid #ffffff0d; }
-  .work-journey[data-enabled="true"] .project-art .visual-gfos-code .screenshot-frame,
-  .work-journey[data-enabled="true"] .project-art .visual-city-signal .screenshot-frame { width: min(100%, calc((100svh - 330px) * 16 / 9)); }
-  .work-journey[data-enabled="true"] .project-art .project-visual.visual-blockwright { padding: 0; background: #07060b; }
+  .work-journey[data-enabled="true"] .project-art .project-visual { background-color: #17171c; }
+  .work-journey[data-enabled="true"] .project-art .project-visual.visual-blockwright { background: #07060b; }
   .work-journey[data-enabled="true"] .project-visual figcaption { font-size: 10px; line-height: 1.5; }
-  .work-journey[data-enabled="true"] .stage-outline { display: none; }
   .work-journey[data-enabled="true"] .journey-nav { display: grid; grid-template-columns: repeat(3, 1fr); position: absolute; bottom: 18px; left: var(--scene-inset); width: min(620px, calc(100% - var(--scene-inset) * 2)); gap: 30px; }
   .journey-nav button { background: none; border: 0; border-top: 1px solid #ffffff26; padding: 15px 0 10px; color: #b3bfd5; cursor: pointer; font-size: 12px; position: relative; text-align: left; }
   .journey-nav button::before { content: ""; position: absolute; inset: -1px 0 auto; height: 1px; background: var(--accent); transform: scaleX(var(--scene-progress, 0)); transform-origin: left; }
