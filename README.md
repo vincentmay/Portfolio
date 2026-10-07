@@ -27,6 +27,10 @@ studies at `/en/work/<project>`, and legal pages linked in each footer.
 ## Maintenance
 
 - Copy and project images: `src/portfolio.ts`.
+- Search titles and descriptions: `words.en` and each project's `seo` fields in
+  `src/portfolio.ts`, shared by prerendering and client navigation. Keep the
+  fallback head in `index.html` and social card in `scripts/social-assets.py`
+  aligned with the homepage. `/en` shares the root homepage's canonical URL.
 - Page components: `src/routes/`; shared presentation: `src/components/`.
 - Styling: `src/styles.css`. Keep the cascade in one file.
 - Operator details and privacy notice: `src/routes/Legal.tsx`.

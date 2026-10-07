@@ -25,7 +25,7 @@ function NotFound() {
       <Header locale="en" />
       <main id="top" className="wrap not-found">
         <p className="eyebrow">404 / PAGE NOT FOUND</p>
-        <h1>This one went missing.</h1>
+        <h1>Page not found.</h1>
         <Link to="/en" className="text-link">
           ← Back to the portfolio
         </Link>

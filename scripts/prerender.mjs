@@ -46,12 +46,13 @@ try {
       "/privacy": "Privacy",
     }[path];
     const title = notFound ? "Page not found — Vincent May" : project
-      ? `${project.name} — Vincent May`
+      ? project.seo.title[locale]
       : legalName
         ? `${legalName} — Vincent May`
-        : `Vincent May — ${words[locale].role}`;
+        : words[locale].metaTitle;
     const legalPage = path === "/privacy" ? "privacy" : "imprint";
-    const description = notFound ? "This page could not be found. Explore Vincent May’s selected projects." : project?.summary[locale] ?? (legalName ? legalDescription[locale][legalPage] : words[locale].intro);
+    const description = notFound ? "This page could not be found. Explore Vincent May’s selected projects." : project?.seo.description[locale] ?? (legalName ? legalDescription[locale][legalPage] : words[locale].metaDescription);
+    const canonical = `https://vincentmay.com${path === "/en" ? "/" : path}`;
     router.update({ history: createMemoryHistory({ initialEntries: [path] }) });
     await router.load();
     let markup = renderToString(createElement(RouterProvider, { router }));
@@ -82,11 +83,11 @@ try {
       )
       .replace(
         /(<meta property="og:url" content=")[^"]*/,
-        `$1https://vincentmay.com${path}`,
+        `$1${canonical}`,
       )
       .replace(
         /(<link rel="canonical" href=")[^"]*/,
-        `$1https://vincentmay.com${path}`,
+        `$1${canonical}`,
       )
       .replace(
         /(<meta property="og:locale" content=")[^"]*/,
@@ -102,7 +103,7 @@ try {
   }
   await writeFile(
     "dist/sitemap.xml",
-    `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.filter((path) => path !== "/legal-notice" && path !== "/privacy").map((path) => `<url><loc>https://vincentmay.com${path}</loc></url>`).join("")}</urlset>\n`,
+    `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.filter((path) => path !== "/en" && path !== "/legal-notice" && path !== "/privacy").map((path) => `<url><loc>https://vincentmay.com${path}</loc></url>`).join("")}</urlset>\n`,
   );
   console.log(`Prerendered ${paths.length} pages, Cloudflare 404 fallback, and sitemap.`);
 } finally {

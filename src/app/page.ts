@@ -24,7 +24,7 @@ export function useDocument(
         ?.setAttribute("content", description);
     }
     const path = window.location.pathname.replace(/\/+$/, "") || "/";
-    const canonical = `https://vincentmay.com${path}`;
+    const canonical = `https://vincentmay.com${path === "/en" ? "/" : path}`;
     document
       .querySelector('link[rel="canonical"]')
       ?.setAttribute("href", canonical);

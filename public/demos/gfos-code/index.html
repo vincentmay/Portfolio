@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,nofollow" />
-<meta name="description" content="A walkthrough of GFOS Code using screenshots from the actual application: ticket context, repository worktrees, and Stack services." />
+<meta name="description" content="GFOS Code screenshot walkthrough: ticket context, multi-repository worktrees, build previews, and isolated application services. By Vincent May." />
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'" />
 <meta name="theme-color" content="#131315" />
-<title>GFOS Code · Workflow walkthrough</title>
+<title>GFOS Code — Screenshot Walkthrough | Vincent May</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="./walkthrough.css" />
 <script src="./walkthrough.js" type="module"></script>
@@ -23,13 +23,13 @@
 <p class="eyebrow">GFOS Code</p>
 <h1 id="title">A ticket becomes<br />a workspace<span>.</span></h1>
 <div class="intro-bottom">
-<p>Bring the requirements, repository threads, and application services into the same place. Here’s what that looks like in the actual app.</p>
+<p>Explore how GFOS Code connects ticket requirements, repository threads, build previews, and application services. These screenshots show the application’s development workflow.</p>
 <nav aria-label="Walkthrough sections"><a href="#ticket">Ticket <span aria-hidden="true">↓</span></a><a href="#setup">Setup <span aria-hidden="true">↓</span></a><a href="#build">Build <span aria-hidden="true">↓</span></a><a href="#services">Services <span aria-hidden="true">↓</span></a></nav>
 </div>
 <p class="capture-note">Captured from the current application with fictional tickets and isolated sample repositories. The real orchestration runs against test stubs for Maven, WildFly, npm, and the JDK; these captures do not demonstrate a company build or deployment.</p>
 </section>
 <section id="ticket" class="screen-section" aria-labelledby="ticket-title">
-<div class="section-heading"><h2 id="ticket-title">The context stays with the work.</h2><p>One ticket, four repositories.<br />A separate thread for each.</p></div>
+<div class="section-heading"><h2 id="ticket-title">Requirements and repository threads.</h2><p>One ticket, four repositories.<br />A separate thread for each.</p></div>
 <figure>
 <img src="/projects/gfos-code.webp" width="1920" height="1080" alt="Actual GFOS Code ticket view with a fictional project's acceptance criteria, four repository threads, and running Stack status." fetchpriority="high" />
 <figcaption><span>Ticket context &amp; repository threads</span><button type="button" data-expand aria-label="Enlarge ticket screen">View full size <span aria-hidden="true">↗</span></button></figcaption>
@@ -56,7 +56,7 @@
 <div class="details"><div><h3>Understand what will run</h3><p>Build previews explain module selection. Changed mode considers module inputs and affected consumers; full and selected builds provide explicit control.</p></div><div><h3>Keep compilation separate from deployment</h3><p>Build only compiles. Build and run deploys after success. Module results, output, diagnostics, and previous attempts remain inspectable in the Build view.</p></div></div>
 </section>
 <section id="services" class="screen-section" aria-labelledby="services-title">
-<div class="section-heading"><h2 id="services-title">Know what’s running.<br />And where.</h2><p>Build steps, service ports,<br />and the frontend’s backend.</p></div>
+<div class="section-heading"><h2 id="services-title">Manage the ticket’s<br />running services.</h2><p>Build steps, service ports,<br />and the frontend’s backend.</p></div>
 <figure>
 <img src="/projects/gfos-code-services.webp" width="1920" height="1080" alt="Actual Services view with completed orchestration steps, two application-server port sets, a frontend dev server, and backend selection, using external toolchain stubs." loading="lazy" />
 <figcaption><span>Services · real orchestration, external toolchain stubs</span><button type="button" data-expand aria-label="Enlarge Stack services screen">View full size <span aria-hidden="true">↗</span></button></figcaption>

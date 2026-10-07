@@ -8,6 +8,8 @@ const paths = [
   "/privacy",
   ...ids.map((id) => `/en/work/${id}`),
 ];
+const searchTitles = new Set();
+const searchDescriptions = new Set();
 for (const path of paths) {
   const filename = path === "/" ? "dist/index.html" : `dist${path}/index.html`;
   const html = await readFile(filename, "utf8");
@@ -40,10 +42,23 @@ for (const path of paths) {
       html,
       `${path}: clean URL content`,
     );
-  assert.ok(
-    html.includes(`https://vincentmay.com${path}`),
-    `${path}: canonical URL`,
-  );
+  const canonical = `https://vincentmay.com${path === "/en" ? "/" : path}`;
+  assert.ok(html.includes(`<link rel="canonical" href="${canonical}"`), `${path}: canonical URL`);
+  assert.ok(html.includes(`<meta property="og:url" content="${canonical}"`), `${path}: matching social URL`);
+  const title = html.match(/<title>(.*?)<\/title>/s)?.[1];
+  const description = html.match(/<meta\s+name="description"\s+content="([^"]*)"/)?.[1];
+  assert.ok(title?.includes("Vincent May"), `${path}: identifies the author`);
+  assert.ok(description && description.length > 40, `${path}: descriptive search snippet`);
+  assert.equal([...html.matchAll(/<title>/g)].length, 1, `${path}: one document title`);
+  assert.equal([...html.matchAll(/<meta\s+name="description"/g)].length, 1, `${path}: one search description`);
+  assert.ok(html.includes(`<meta property="og:title" content="${title}"`), `${path}: matching social title`);
+  assert.equal(html.match(/<meta\s+property="og:description"\s+content="([^"]*)"/)?.[1], description, `${path}: matching social description`);
+  if (path !== "/en") {
+    assert.ok(!searchTitles.has(title), `${path}: distinct page title`);
+    assert.ok(!searchDescriptions.has(description), `${path}: distinct page description`);
+    searchTitles.add(title);
+    searchDescriptions.add(description);
+  }
   assert.ok(
     !html.includes("/src/assets/"),
     `${path}: no development asset paths`,
@@ -82,10 +97,11 @@ for (const asset of [
 console.log("PASS screenshot walkthrough, social assets, and search metadata");
 const missing = await readFile("dist/404.html", "utf8");
 assert.equal(await stat("dist/_redirects").then(() => true, e => { if (e.code === "ENOENT") return false; throw e; }), false, "No catch-all rewrite overriding prerendered routes or 404");
-assert.match(missing, /This one went missing/);
+assert.match(missing, /<h1>Page not found\.<\/h1>/);
 assert.match(missing, /noindex,follow/);
 assert.ok(!(await readFile("dist/sitemap.xml", "utf8")).includes("/404"));
 assert.doesNotMatch(await readFile("dist/sitemap.xml", "utf8"), /\/(?:legal-notice|privacy)</, "Legal pages stay accessible through footer links, outside the search sitemap");
+assert.doesNotMatch(await readFile("dist/sitemap.xml", "utf8"), /<loc>https:\/\/vincentmay\.com\/en<\/loc>/, "Homepage alias is excluded from the sitemap");
 assert.doesNotMatch(await readFile("dist/sitemap.xml", "utf8"), /\/(?:de(?:\/|<)|impressum|datenschutz)/, "Sitemap contains no German routes");
 for (const path of ["de", "impressum", "datenschutz"]) {
   for (const filename of [`dist/${path}`, `dist/${path}.html`]) {

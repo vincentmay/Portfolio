@@ -20,7 +20,7 @@ export function Home({ locale }: { locale: Locale }) {
   const hash = useLocation({ select: (location) => location.hash });
   const smoothWorkReturn = useLocation({ select: (location) => location.state.smoothWorkReturn === true });
   const motion = usePortfolioMotion(locale, hash.startsWith("work-") ? hash.slice(5) : undefined, smoothWorkReturn);
-  useDocument(locale, `Vincent May — ${t.role}`, t.intro);
+  useDocument(locale, t.metaTitle, t.metaDescription);
   return (
     <div className="portfolio portfolio-home" ref={motion}>
       <a className="skip" href="#main">
@@ -46,7 +46,7 @@ export function Home({ locale }: { locale: Locale }) {
                   </span>
                 </span>
               </h1>
-              <p className="hero-statement">{"Curiosity, put to work."}</p>
+              <p className="hero-statement">{t.heroStatement}</p>
               <p className="hero-intro">{t.intro}</p>
               <div className="hero-actions">
                 <a className="button primary" href="#work">
