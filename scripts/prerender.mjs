@@ -45,10 +45,10 @@ try {
       "/legal-notice": "Legal notice / Impressum",
       "/privacy": "Privacy",
     }[path];
-    const title = notFound ? "Page not found — Vincent May" : project
+    const title = notFound ? "Page not found | Vincent May" : project
       ? project.seo.title[locale]
       : legalName
-        ? `${legalName} — Vincent May`
+        ? `${legalName} | Vincent May`
         : words[locale].metaTitle;
     const legalPage = path === "/privacy" ? "privacy" : "imprint";
     const description = notFound ? "This page could not be found. Explore Vincent May’s selected projects." : project?.seo.description[locale] ?? (legalName ? legalDescription[locale][legalPage] : words[locale].metaDescription);

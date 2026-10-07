@@ -48,7 +48,7 @@ export const work: CaseStudy[] = [
       "en": "A ticket-driven workspace for multi-repository development. Coordinate coding agents, incremental builds, and isolated application environments."
     },
     "seo": {
-      "title": { "en": "GFOS Code — Developer Workspace | Vincent May" },
+      "title": { "en": "GFOS Code: Developer Workspace | Vincent May" },
       "description": { "en": "Explore Vincent May’s GFOS Code project: a T3 Code fork connecting tickets, coding agents, multi-repository worktrees, Maven builds, and isolated runtimes." }
     },
     "focus": {
@@ -169,7 +169,7 @@ export const work: CaseStudy[] = [
       "en": "An in-game workspace for coding agents to design, render, and verify Minecraft builds. From a brief to an editable Litematica schematic."
     },
     "seo": {
-      "title": { "en": "Blockwright — AI Minecraft Building | Vincent May" },
+      "title": { "en": "Blockwright: AI Minecraft Building | Vincent May" },
       "description": { "en": "Blockwright gives Codex and Claude a Minecraft studio, Python geometry tools, renders, and artifact checks to create and revise Litematica schematics." }
     },
     "focus": {
@@ -353,7 +353,7 @@ export const work: CaseStudy[] = [
       "en": "A NoPixel multi-stream viewer connecting creators, crews, live perspectives, and broadcast history. Arrange your view and save it for later."
     },
     "seo": {
-      "title": { "en": "POVLINE — NoPixel Multi-stream Viewer | Vincent May" },
+      "title": { "en": "POVLINE: NoPixel Multi-stream Viewer | Vincent May" },
       "description": { "en": "POVLINE is Vincent May’s independent NoPixel viewer: customizable multi-stream layouts, creator and crew discovery, saved views, maps, and broadcast history." }
     },
     "focus": {
@@ -500,10 +500,10 @@ export const words = {
     "contact": "Contact",
     "role": "Product engineer",
     "place": "Hattingen, Germany",
-    "metaTitle": "Vincent May — Product Engineer & Full-stack Developer",
+    "metaTitle": "Vincent May | Product Engineer & Full-stack Developer",
     "metaDescription": "Vincent May is a product engineer and full-stack developer in Hattingen, Germany. Explore developer tools, AI agent workspaces, and real-time web products.",
     "heroStatement": "From idea to working software.",
-    "intro": "I design and build developer tools, agent workspaces, and live web applications—from the interface to the systems behind them. Full-stack developer at GFOS.",
+    "intro": "I design and build developer tools, agent workspaces, and live web applications, from the interface to the systems behind them. Full-stack developer at GFOS.",
     "cta": "Explore my work",
     "hello": "Say hello",
     "index": "Selected work",

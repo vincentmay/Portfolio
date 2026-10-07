@@ -86,7 +86,7 @@ export function Legal({
 }) {
   const t = words[locale];
   const doc = TEXT[locale][page];
-  useDocument(locale, `${doc.title} — Vincent May`, legalDescription[locale][page], true);
+  useDocument(locale, `${doc.title} | Vincent May`, legalDescription[locale][page], true);
 
   return (
     <div className="portfolio legal-site" id="top">

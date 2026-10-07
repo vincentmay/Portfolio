@@ -19,7 +19,7 @@ export function Project({ locale, id }: { locale: Locale; id: string }) {
   const project = work.find((p) => p.id === id);
   useDocument(
     locale,
-    project?.seo.title[locale] ?? `${t.missing} — Vincent May`,
+    project?.seo.title[locale] ?? `${t.missing} | Vincent May`,
     project?.seo.description[locale] ?? t.missing,
     !project,
   );

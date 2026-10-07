@@ -16,7 +16,7 @@ import { SmoothScroll } from "./SmoothScroll";
 function NotFound() {
   useDocument(
     "en",
-    "Page not found — Vincent May",
+    "Page not found | Vincent May",
     "This page could not be found. Explore Vincent May’s selected projects.",
     true,
   );
